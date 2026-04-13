@@ -29,7 +29,6 @@ function logout() {
 loadUser();
 
 
-// Load vehicle from DB
 fetch('/get_vehicle')
 .then(res => res.json())
 .then(data => {
@@ -43,11 +42,13 @@ fetch('/get_vehicle')
 });
 
 
-// When vehicle changes → load brand
+document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("vehicle").addEventListener("change", function() {
     let vehicle = this.value;
 
-    fetch(`/get_brand/${vehicle}`)
+    
+
+    fetch(`/get_brand/${encodeURIComponent(vehicle)}`)
     .then(res => res.json())
     .then(data => {
         let brandSelect = document.getElementById("brand");
@@ -61,12 +62,14 @@ document.getElementById("vehicle").addEventListener("change", function() {
         });
     });
 });
+});
 
 document.getElementById("brand").addEventListener("change", function() {
+     console.log("🔥 CHANGE TRIGGERED");
     let brand = this.value;
     let vehicle = document.getElementById("vehicle").value;
 
-
+    
     fetch(`/get_model/${vehicle}/${brand}`)
     .then(res => res.json())
     .then(data => {
@@ -103,6 +106,23 @@ document.getElementById("model").addEventListener("change", function() {
     });
 });
 
+
+function goNext(event) {
+
+    event.preventDefault(); // 🔥 important
+
+    let brand = document.getElementById("brand").value;
+    let model = document.getElementById("model").value;
+    let fuel = document.getElementById("fuel").value;
+
+    console.log("Saving:", brand, model, fuel); 
+
+    localStorage.setItem("brand", brand);
+    localStorage.setItem("model", model);
+    localStorage.setItem("fuel", fuel);
+
+    window.location.href = "/order";
+}
 
 
 
