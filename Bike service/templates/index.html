@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/index.css">
+
+  <link rel="icon" type="jpg"
+    href="https://img.freepik.com/premium-vector/motoservicio-white-background_917213-250266.jpg">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>BIKE SERVICE CENTER</title>
+</head>
+
+<body>
+
+  <header>
+    <div class="logos">
+      <img src="../static/images/name.png" alt="Omega Bike Services name">
+    </div>
+
+    <div class="content">
+      <a href="#">About Us</a>
+      <a href="#">Our vision</a>
+      <a href="#">Why Choose Us</a>
+      <a href="#">Happy Clients</a>
+      <a href="#"><i class="fa-solid fa-location-dot"></i> Location</a>
+    </div>
+
+  <div class="user" id="userSection">
+    <a class="in" href="/signin">Sign In</a>
+    <a class="up" href="/signup">Sign Up</a>
+</div>
+  </header>
+
+  <div class="container">
+
+    <div class="indexcover">
+      <img src="../static/images/indeximg.png" alt="index cover">
+    </div>
+  <form id="index" class="formcontainer" method="POST" action="/submit">
+
+    <!-- VEHICLE -->
+   <select id="vehicle" name="vehicle">
+  <option value="">Select Vehicle</option>
+  
+</select>
+
+<!-- BRAND -->
+<select id="brand" name="brand">
+  <option value="">Select Brand</option>
+</select>
+
+<!-- MODEL -->
+<select id="model" name="model">
+  <option value="">Select Model</option>
+</select>
+
+<!-- FUEL -->
+<select id="fuel" name="fuel">
+  <option value="">Select Fuel</option>
+</select>
+    <a href="/order" class="letgo" >LETS GO</a>
+
+  </form>
+  </div>
+  </div>
+
+  <div class="container2">
+
+    <h2 class="head">Bike Service Solutions</h2>
+
+    <div class="offers">
+      <a href="general service" class="GS"><img src="../static/images/general bike.png">General Service</a>
+
+
+       <a href="general service" class="Vb"><img src="../static/images/bike breakdown.png">General Service</a>
+
+
+       <a href="general service" class="Vb"><img src="../static/images/bike wash.png">General Service</a>
+
+    </div>
+
+    <div class="offers2">
+
+      <a href="general service" class="GS"><img class="" src="../static/images/bike wash.png">General Service</a>
+
+
+       <a href="general service" class="Vb"><img src="../static/images/bike-engine.png">General Service</a>
+
+       <a href="general service" class="off"><img src="../static/images/bike offers.png">General Service</a>
+
+    </div>
+
+  </div>
+
+  <script src="../static/javascript/index.js"></script>
+
+</body>
+
+</html>

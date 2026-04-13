@@ -1,0 +1,65 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    height:100vh;
+    background: linear-gradient(135deg,#fbc531,#f5f6fa);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    width:300px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    background:rgba(255,255,255,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    text-align: center;
+    
+}
+.card h2{
+    margin-bottom: 30px;
+    color:#2f3640;
+}
+h4{
+    font-size: 13px;
+}
+.input-box{
+    margin-bottom: 15px;
+}
+.input-box input{
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:none;
+    outline:none;
+}
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius: 6px;
+    background:#fbc531;
+    cursor:pointer;
+    margin-bottom: 25px;
+}
+.back{
+    margin-top: 15px;
+   
+}
+.back a{
+    text-decoration: none;
+     color:black;
+}
+.success{
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
