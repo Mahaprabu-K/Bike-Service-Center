@@ -207,6 +207,56 @@ def get_selected():
         })
     else:
         return jsonify({"error": "No data found"}), 404
+    
+
+    
+@app.route('/get_brands')
+def get_brands():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT DISTINCT brand FROM vehicless")
+    data = [row[0] for row in cursor.fetchall()]
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+@app.route('/get_models/<brands>')
+def get_models(brands):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT DISTINCT model FROM vehicless WHERE brand = ?",
+        (brands,)
+    )
+
+    data = [row[0] for row in cursor.fetchall()]
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+
+@app.route('/get_fuels/<models>')
+def get_fuels(models):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT DISTINCT fuel FROM vehicless WHERE model = ?",
+        (models,)
+    )
+
+    data = [row[0] for row in cursor.fetchall()]
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
 
 
 

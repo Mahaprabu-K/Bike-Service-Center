@@ -48,7 +48,7 @@ document.getElementById("vehicle").addEventListener("change", function() {
 
     
 
-    fetch(`/get_brand/${encodeURIComponent(vehicle)}`)
+    fetch(`/get_brand/${(vehicle)}`)
     .then(res => res.json())
     .then(data => {
         let brandSelect = document.getElementById("brand");
