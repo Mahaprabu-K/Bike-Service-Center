@@ -35,6 +35,9 @@ def signin():
 def order():
     return render_template("order.html")
 
+@app.route('/submit', methods=['POST'])
+def submit():
+    return redirect('/order')
 
 # -------------------- AUTH --------------------
 
@@ -110,71 +113,32 @@ def get_user():
 
 
 # -------------------- DROPDOWN APIs --------------------
-
-@app.route('/get_vehicle')
-def get_vehicle():
+@app.route('/get_all_data')
+def get_all_data():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT DISTINCT vehicle_type FROM vehicless")
-    data = [row[0] for row in cursor.fetchall()]
+    cursor.execute("""
+        SELECT DISTINCT vehicle_type, brand, model, fuel 
+        FROM vehicless
+    """)
 
-    cursor.close()
-    conn.close()
+    data = {}
 
-    return jsonify(data)
+    for vehicle, brand, model, fuel in cursor.fetchall():
 
+        if vehicle not in data:
+            data[vehicle] = {}
 
-@app.route('/get_brand/<vehicle>')
-def get_brand(vehicle):
-    conn = get_connection()
-    cursor = conn.cursor()
+        if brand not in data[vehicle]:
+            data[vehicle][brand] = {}
 
-    cursor.execute(
-        "SELECT DISTINCT brand FROM vehicless WHERE vehicle_type = ?",
-        (vehicle,)
-    )
+        if model not in data[vehicle][brand]:
+            data[vehicle][brand][model] = []
 
-    data = [row[0] for row in cursor.fetchall()]
-
-    cursor.close()
-    conn.close()
-
-    return jsonify(data)
-
-
-@app.route('/get_model/<vehicle>/<brand>')
-def get_model(vehicle, brand):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT DISTINCT model FROM vehicless WHERE vehicle_type = ? AND brand = ?",
-        (vehicle, brand)
-    )
-
-    data = [row[0] for row in cursor.fetchall()]
-
-    cursor.close()
-    conn.close()
-
-    return jsonify(data)
-
-
-@app.route('/get_fuel/<vehicle>/<brand>/<model>')
-def get_fuel(vehicle, brand, model):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT DISTINCT fuel FROM vehicless WHERE vehicle_type = ? AND brand = ? AND model = ?",
-        (vehicle, brand, model)
-    )
-
-    data = [row[0] for row in cursor.fetchall()]
-
-    cursor.close()
-    conn.close()
+        # duplicate avoid
+        if fuel not in data[vehicle][brand][model]:
+            data[vehicle][brand][model].append(fuel)
 
     return jsonify(data)
 

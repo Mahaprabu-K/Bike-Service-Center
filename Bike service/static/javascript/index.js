@@ -29,100 +29,116 @@ function logout() {
 loadUser();
 
 
-fetch('/get_vehicle')
-.then(res => res.json())
-.then(data => {
-    let vehicleSelect = document.getElementById("vehicle");
-    data.forEach(v => {
-        let option = document.createElement("option");
-        option.value = v;
-        option.text = v;
-        vehicleSelect.appendChild(option);
+let fullData = {};
+
+// 🔹 reusable function
+function populate(id, values, text) {
+    const el = document.getElementById(id);
+
+    // 🔥 clear old data (important)
+    el.innerHTML = `<option value="">${text}</option>`;
+
+    values.forEach(v => {
+        let opt = document.createElement("option");
+        opt.value = v;
+        opt.text = v;
+        el.appendChild(opt);
     });
-});
+}
 
-
+// 🔹 load once (IMPORTANT)
 document.addEventListener("DOMContentLoaded", function () {
-document.getElementById("vehicle").addEventListener("change", function() {
-    let vehicle = this.value;
 
-    
-
-    fetch(`/get_brand/${(vehicle)}`)
+    fetch('/get_all_data')
     .then(res => res.json())
     .then(data => {
-        let brandSelect = document.getElementById("brand");
-        brandSelect.innerHTML = '<option value="">Select Brand</option>';
+        fullData = data;
 
-        data.forEach(b => {
-            let option = document.createElement("option");
-            option.value = b;
-            option.text = b;
-            brandSelect.appendChild(option);
-        });
+        populate("vehicle", Object.keys(fullData), "Select Vehicle");
+        populate("brand", [], "Select Brand");
     });
-});
+
+    // 🔹 vehicle change
+    document.getElementById("vehicle").addEventListener("change", function () {
+        let vehicle = this.value;
+
+        populate("brand", Object.keys(fullData[vehicle] || {}), "Select Brand");
+        populate("model", [], "Select Model");
+        populate("fuel", [], "Select Fuel");
+    });
+
+    // 🔹 brand change
+    document.getElementById("brand").addEventListener("change", function () {
+        let vehicle = document.getElementById("vehicle").value;
+        let brand = this.value;
+
+        populate(
+            "model",
+            Object.keys((fullData[vehicle] || {})[brand] || {}),
+            "Select Model"
+        );
+
+        populate("fuel", [], "Select Fuel");
+    });
+
+    // 🔹 model change
+    document.getElementById("model").addEventListener("change", function () {
+        let vehicle = document.getElementById("vehicle").value;
+        let brand = document.getElementById("brand").value;
+        let model = this.value;
+
+        populate(
+            "fuel",
+            ((fullData[vehicle] || {})[brand] || {})[model] || [],
+            "Select Fuel"
+        );
+    });
+
 });
 
-document.getElementById("brand").addEventListener("change", function() {
-     console.log("🔥 CHANGE TRIGGERED");
-    let brand = this.value;
+
+function goNext() {
+
+
     let vehicle = document.getElementById("vehicle").value;
-
     
-    fetch(`/get_model/${vehicle}/${brand}`)
-    .then(res => res.json())
-    .then(data => {
-        let modelSelect = document.getElementById("model");
-        modelSelect.innerHTML = '<option value="">Select Model</option>';
-
-        data.forEach(m => {
-            let option = document.createElement("option");
-            option.value = m;
-            option.text = m;
-            modelSelect.appendChild(option);
-        });
-    });
-});
-
-document.getElementById("model").addEventListener("change", function() {
-    let model = this.value;
-    let vehicle = document.getElementById("vehicle").value;
     let brand = document.getElementById("brand").value;
 
-
-    fetch(`/get_fuel/${vehicle}/${brand}/${model}`)
-    .then(res => res.json())
-    .then(data => {
-        let fuelSelect = document.getElementById("fuel");
-        fuelSelect.innerHTML = '<option value="">Select Fuel</option>';
-
-        data.forEach(f => {
-            let option = document.createElement("option");
-            option.value = f;
-            option.text = f;
-            fuelSelect.appendChild(option);
-        });
-    });
-});
-
-
-function goNext(event) {
-
-    event.preventDefault(); // 🔥 important
-
-    let brand = document.getElementById("brand").value;
     let model = document.getElementById("model").value;
+    
     let fuel = document.getElementById("fuel").value;
+    
+    console.log("Saving:",vehicle, brand, model, fuel); 
 
-    console.log("Saving:", brand, model, fuel); 
-
+    localStorage.setItem("vehicle", vehicle);
     localStorage.setItem("brand", brand);
     localStorage.setItem("model", model);
     localStorage.setItem("fuel", fuel);
 
-    window.location.href = "/order";
 }
+
+
+document.getElementById("brand").addEventListener("change", function () {
+  let brand = this.value;
+
+  localStorage.setItem("brand", brand); // save
+  updateImage(brand); // update image
+});
+
+// 🔥 Image update function
+function updateImage(brand) {
+  let img = document.getElementById("vehicleImage");
+
+  if (brand === "Honda") {
+    img.src = "/static/images/service.png";
+  } else if (brand === "Yamaha") {
+    img.src = "/static/images/yamaha.png";
+  } else {
+    img.src = "";
+  }
+}
+
+
 
 
 

@@ -17,6 +17,8 @@ window.onload = function () {
     document.getElementById("fuel").innerHTML =
         `<option selected>${fuel}</option>`;
 
+        
+
 
 
     if (brand === "TVS") {
@@ -100,17 +102,45 @@ document.getElementById("model").addEventListener("change", function() {
 });
 
 
+
+// 🔹 Image update function
+// 🔹 Image update function
+function updateImage() {
+
+    let brand = document.getElementById("brand").value;
+    let model = document.getElementById("model").value;
+    let fuel = document.getElementById("fuel").value;
+
+    // 🔥 எல்லாம் select ஆனா மட்டும் run ஆகும்
+    if (brand && model && fuel) {
+
+        if (brand === "TVS") {
+            document.getElementById("img1").src = "/static/images/service.jpg";
+            document.getElementById("img2").src = "/static/images/service2.jpg";
+            document.getElementById("img3").src = "/static/images/tvs3.jpg";
+        } 
+        else if (brand === "Bajaj") {
+            document.getElementById("img1").src = "/static/images/service.jpg";
+            document.getElementById("img2").src = "/static/images/service2.jpg";
+            document.getElementById("img3").src = "/static/images/service3.jpg";
+        }
+
+    }
+}
+// 🔹 Dropdown change event
+document.getElementById("brand").addEventListener("change", function () {
+    let selectedBrand = this.value;
+    let selected = this.value;
+    updateImage(selectedBrand,selectedModel);
+});
+
 document.getElementById("model").addEventListener("change", function () {
-    changeImage(this.value);
+    let selectedModel = this.value;
+    updateImage(selectedModel);
+});
 
-function changeImage(brand) {
-    const bikeImages = {
-        "Bajaj": "/static/images/service.jpg",
-        "Pulsar": "/static/images/pulsar.png",
-        "R15": "/static/images/r15.png"
-    };
+document.getElementById("fuel").addEventListener("change", function () {
+    let selectedFuel = this.value;
+    updateImage(selectedFuel);
+});
 
-    let imagePath = bikeImages[brand] || "/static/images/default.png";
-
-    document.getElementById("bikeImage").src = imagePath;
-}});

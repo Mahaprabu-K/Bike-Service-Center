@@ -45,29 +45,29 @@
     </div>
   <form id="index" class="formcontainer" method="POST" action="/submit">
 
-    <!-- VEHICLE -->
-   <select id="vehicle" name="vehicle">
-  <option value="">Select Vehicle</option>
-  
-</select>
+  <!-- VEHICLE -->
+  <select id="vehicle" name="vehicle" required>
+    <option value="" disabled selected>Select Vehicle</option>
+  </select>
 
-<!-- BRAND -->
-<select id="brand" name="brand">
-  <option value="">Select Brand</option>
-</select>
+  <!-- BRAND -->
+  <select id="brand" name="brand" required>
+    <option value="" disabled selected>Select Brand</option>
+  </select>
 
-<!-- MODEL -->
-<select id="model" name="model">
-  <option value="">Select Model</option>
-</select>
+  <!-- MODEL -->
+  <select id="model" name="model" required>
+    <option value="" disabled selected>Select Model</option>
+  </select>
 
-<!-- FUEL -->
-<select id="fuel" name="fuel">
-  <option value="">Select Fuel</option>
-</select>
-    <a href="/order" onclick="goNext(event)" class="letgo" >LETS GO</a>
+  <!-- FUEL -->
+  <select id="fuel" name="fuel" required>
+    <option value="" disabled selected>Select Fuel</option>
+  </select>
 
-  </form>
+  <button onclick="goNext()" class="letgo">LETS GO</button>
+
+</form>
   </div>
   </div>
 
