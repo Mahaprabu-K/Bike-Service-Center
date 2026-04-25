@@ -8,7 +8,7 @@ app.secret_key = "mysecretkey"
 def get_connection():
     return pyodbc.connect(
         "Driver={SQL Server};"
-        "Server=KISHORE\\SQLEXPRESS;"
+        "Server=Z14-55N\\SQLEXPRESS;"
         "Database=Bikeservicedb;"
         "MARS_Connection=Yes;"
     )
@@ -38,6 +38,12 @@ def order():
 @app.route('/submit', methods=['POST'])
 def submit():
     return redirect('/order')
+
+
+@app.route('/details')
+def details():
+    return render_template('details.html')
+
 
 # -------------------- AUTH --------------------
 
@@ -143,35 +149,7 @@ def get_all_data():
     return jsonify(data)
 
 
-@app.route('/get_selected')
-def get_selected():
-    conn = get_connection()
-    cursor = conn.cursor()
 
-    brand = request.args.get('brand')
-    model = request.args.get('model')
-    fuel = request.args.get('fuel')
-
-    cursor.execute("""
-        SELECT brand, model, fuel 
-        FROM vehicless
-        WHERE brand=? AND model=? AND fuel=?
-    """, (brand, model, fuel))
-
-    row = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-
-    if row:
-        return jsonify({
-            "brand": row[0],
-            "model": row[1],
-            "fuel": row[2]
-        })
-    else:
-        return jsonify({"error": "No data found"}), 404
-    
 
     
 @app.route('/get_brands')
@@ -223,6 +201,63 @@ def get_fuels(models):
     return jsonify(data)
 
 
+
+# Get services by brand
+@app.route("/get_services/<brand>")
+def get_services(brand):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM detailss WHERE brand=?",
+        (brand,)
+    )
+
+    rows = cursor.fetchall()
+
+    services = []
+
+    for row in rows:
+
+        services.append({
+            "id": row[0],
+            "brand": row[1],
+            "name": row[2],
+            "price": row[3],
+            "image": row[4]
+        })
+
+    conn.close()
+
+    return jsonify(services)
+
+
+# Get single service
+@app.route("/get_service/<int:id>/<brand>")
+def get_service(id, brand):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM detailss WHERE id=? AND brand=?",
+        (id, brand)
+    )
+
+    row = cursor.fetchone()
+
+    service = {
+        "id": row[0],
+        "brand": row[1],
+        "name": row[2],
+        "price": row[3],
+        "image": row[4]
+    }
+
+    conn.close()
+
+    return jsonify(service)
 
 if __name__ == '__main__':
     app.run(debug=True)

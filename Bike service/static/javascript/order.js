@@ -21,13 +21,13 @@ window.onload = function () {
 
 
 
-    if (brand === "TVS") {
+    if (brand === "ELECT ") {
     document.getElementById("img1").src = "/static/images/service.jpg";
     document.getElementById("img2").src = "/static/images/service2.jpg";
     document.getElementById("img3").src = "/static/images/tvs3.jpg";
 }
 
- if (brand === "Bajaj") {
+ if (brand === "ROYAL ENFIELD") {
     document.getElementById("img1").src = "/static/images/service.jpg";
     document.getElementById("img2").src = "/static/images/service2.jpg";
     document.getElementById("img3").src = "/static/images/service3.jpg";
@@ -114,12 +114,12 @@ function updateImage() {
     // 🔥 எல்லாம் select ஆனா மட்டும் run ஆகும்
     if (brand && model && fuel) {
 
-        if (brand === "TVS") {
+        if (brand === "ELECT ") {
             document.getElementById("img1").src = "/static/images/service.jpg";
             document.getElementById("img2").src = "/static/images/service2.jpg";
             document.getElementById("img3").src = "/static/images/tvs3.jpg";
         } 
-        else if (brand === "Bajaj") {
+        else if (brand === "ROYAL ENFIELD") {
             document.getElementById("img1").src = "/static/images/service.jpg";
             document.getElementById("img2").src = "/static/images/service2.jpg";
             document.getElementById("img3").src = "/static/images/service3.jpg";
@@ -130,13 +130,12 @@ function updateImage() {
 // 🔹 Dropdown change event
 document.getElementById("brand").addEventListener("change", function () {
     let selectedBrand = this.value;
-    let selected = this.value;
     updateImage(selectedBrand,selectedModel);
 });
 
 document.getElementById("model").addEventListener("change", function () {
     let selectedModel = this.value;
-    updateImage(selectedModel);
+    updateImage(selectedModel,selectedFuel);
 });
 
 document.getElementById("fuel").addEventListener("change", function () {
@@ -144,3 +143,44 @@ document.getElementById("fuel").addEventListener("change", function () {
     updateImage(selectedFuel);
 });
 
+
+
+
+
+fetch("/get_services")
+.then(response => response.json())
+.then(data => {
+
+    // First service
+    document.getElementById("img1").src =
+        "/static/images/" + data[0].image;
+
+    document.getElementById("name1").innerText =
+        data[0].name;
+
+    document.getElementById("price1").innerText =
+        "Rs." + data[0].price;
+
+
+    // Second service
+    document.getElementById("img2").src =
+        "/static/images/" + data[1].image;
+
+    document.getElementById("name2").innerText =
+        data[1].name;
+
+    document.getElementById("price2").innerText =
+        "Rs." + data[1].price;
+
+
+    // Third service
+    document.getElementById("img3").src =
+        "/static/images/" + data[2].image;
+
+    document.getElementById("name3").innerText =
+        data[2].name;
+
+    document.getElementById("price3").innerText =
+        "Rs." + data[2].price;
+
+});

@@ -94,4 +94,36 @@ h3{
     background-color: orange;
     transition: 0.3s;
   }
+  
+  
 
+
+.servicecover {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    position: relative; 
+    width: 350px;
+}
+
+.img1 {
+    width: 350px;
+    height: 250px;
+}
+
+.tag {
+    position: absolute;
+    bottom: 0;          
+    left: 0;
+    width: 100%;
+
+    background: rgba(0,0,0,0.7);
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 20px;
+}
