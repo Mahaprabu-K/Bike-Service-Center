@@ -1,52 +1,76 @@
-// Get id from URL
-const params =
-    new URLSearchParams(window.location.search);
+let currentServiceId = null;
 
-const serviceId =
-    params.get("id");
+window.onload = function () {
 
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-// Call Python backend
-fetch("/get_service/" + serviceId)
+    if (!id) {
+        console.log("No service ID in URL");
+        return;
+    }
 
-.then(response => response.json())
+    currentServiceId = id;   // ✅ முக்கியம்
+    console.log("SERVICE ID:", currentServiceId);
 
-.then(service => {
+    fetch(`/get_service_details/${id}`)
+    .then(res => res.json())
+    .then(data => {
 
-    // Image
-    document.getElementById("serviceImage").src =
-        "/static/images/" + service.image;
+        document.getElementById("serviceImage").src = data.image;
+        document.getElementById("serviceName").innerText = data.name;
+        document.getElementById("servicePrice").innerText = "₹ " + data.price;
 
+        let list = document.getElementById("inclusionList");
+        list.innerHTML = "";
 
-    // Name
-    document.getElementById("serviceName").innerText =
-        service.name;
-
-    // Price
-    document.getElementById("servicePrice").innerText =
-        "₹ " + service.price;
-
-    // Inclusions
-    const list =
-        document.getElementById("inclusionList");
-
-    list.innerHTML = "";
-
-    service.inclusions.forEach(item => {
-
-        const li =
-            document.createElement("li");
-
-        li.innerText = item;
-
-        list.appendChild(li);
-
+        data.inclusions.forEach(item => {
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        });
     });
+};
 
-})
 
-.catch(error => {
+// 🔥 Booking function
+function bookNow(serviceId) {
 
-    console.log("Error:", error);
+    console.log("BOOKING ID:", currentServiceId);
 
-});
+    if (!currentServiceId) {
+        alert("Service ID missing");
+        return;
+    }
+
+    let brand = localStorage.getItem("brand");
+    let model = localStorage.getItem("model");
+
+    fetch("/book_service", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            brand: brand,
+            model: model,
+            service_id: currentServiceId
+        })
+    })
+    .then(res => {
+        if (res.status === 402) {
+            alert("Please login first");
+            window.location.href = "/signin";
+            return;
+        }
+        return res.json();
+    })
+    .then(data => {
+        if (data) {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+    });
+}

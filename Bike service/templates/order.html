@@ -12,80 +12,42 @@
 </head>
 
 <body>
+
   <header>
     <div class="logos">
-      <img src="../static/images/name.png" alt="Omega Bike Services name"></div>
-      <div class="user"><a href="/signin" class="in">Sign In</a>
-    </div></header>
-    <div class="select">
-        <form class="formcontainer">
-     <select id="brand" name="brand">
-    <option value="">Select Brand</option>
-</select>
-
-<select id="model" name="model">
-    <option value="">Select Model</option>
-</select>
-
-<select id="fuel" name="fuel">
-    <option value="">Select Fuel</option>
-</select>
-    </form></div>
-    <div class="moto">
-        <h3 >Motorcycle</h3></div>
-       <div class="servicecover" id="serviceContainer">
-
-    <!-- Card 1 -->
-    <div class="card">
-
-        <a href="/details?id=1">
-
-            <img id="img1" class="img1">
-
-            <div class="tag" id="tag1">
-                <span id="name1"></span>
-                <span id="price1"></span>
-            </div>
-
-        </a>
-
+      <img src="../static/images/name.png" alt="Omega Bike Services name">
     </div>
 
-    <!-- Card 2 -->
-    <div class="card">
-
-        <a href="/details?id=2">
-
-            <img id="img2" class="img1">
-
-            <div class="tag" id="tag2">
-                <span id="name2"></span>
-                <span id="price2"></span>
-            </div>
-
-        </a>
-
+    <div class="user">
+      <a href="/signin" class="in">Sign In</a>
     </div>
+  </header>
 
-    <!-- Card 3 -->
-    <div class="card">
+  <div class="select">
+    <form class="formcontainer">
+      <select id="brand" name="brand" >
+        <option value="">Select Brand</option>
+      </select>
 
-        <a href="/details?id=3">
+      <select id="model" name="model">
+        <option value="">Select Model</option>
+      </select>
 
-            <img id="img3" class="img1">
+      <select id="fuel" name="fuel">
+        <option value="">Select Fuel</option>
+      </select>
+    </form>
+  </div>
 
-            <div class="tag" id="tag3">
-                <span id="name3"></span>
-                <span id="price3"></span>
-            </div>
+  <div class="moto">
+    <h3>Motorcycle</h3>
+  </div>
 
-        </a>
+  <div class="servicecover" id="serviceContainer"></div>
 
-    </div>
+    
+  <script src="../static/javascript/order.js"></script>
 
-</div>
-<script src="/static/script.js"></script>
-    <script src="../static/javascript/order.js"></script>
-  </body>
-  
-  </html>
+</body>
+
+</html>

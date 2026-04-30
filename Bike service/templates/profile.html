@@ -1,0 +1,40 @@
+<h2>Edit Profile</h2>
+
+<input type="text" id="fname" placeholder="First Name"><br>
+<input type="text" id="lname" placeholder="Last Name"><br>
+<input type="text" id="mobno" placeholder="Mobile Number"><br>
+<input type="text" id="username" placeholder="Username"><br>
+<input type="password" id="password" placeholder="Password"><br>
+
+<button onclick="updateUser()">Update</button>
+
+<script>
+function updateUser() {
+
+    const firstname = document.getElementById("fname").value;
+    const lastname = document.getElementById("lname").value;
+    const mobno = document.getElementById("mobno").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    fetch("/update_user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+            firstname,
+            lastname,
+            mobno,
+            username,
+            password
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(err => {
+        console.log("Error:", err);
+    });
+}
+</script>

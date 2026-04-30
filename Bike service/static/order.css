@@ -127,3 +127,37 @@ h3{
 
     padding: 20px;
 }
+
+.servicecover{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-box{
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f5f5f5;
+}
+
+.service-link{
+    text-decoration: none;
+    color: black;
+}
+
+.service-img{
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.service-info h4{
+    margin: 5px 0;
+}
+
+.service-info p{
+    color: green;
+    font-weight: bold;
+}

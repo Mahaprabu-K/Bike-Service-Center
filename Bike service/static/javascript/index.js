@@ -6,28 +6,61 @@ function loadUser() {
 
         if (data.firstname && data.lastname) {
             userDiv.innerHTML = `
-                <h3>${data.firstname} ${data.lastname}</h3>
-                <a class="in" href="#" onclick="logout()">Logout</a>
+                <div class="user-menu">
+                    
+                    <span class="username">
+                       <h3> ${data.firstname} ${data.lastname}</h3>
+                    </span>
+
+                    <div class="user-icon" onclick="toggleMenu()">👤</div>
+
+                    <div id="dropdownMenu" class="dropdown">
+                        <button onclick="goToBookings()">My Bookings</button>
+                        <button onclick="goToProfile()">Edit Profile</button>
+                        <button onclick="logout()">Logout</button>
+                    </div>
+
+                </div>
             `;
         } else {
             userDiv.innerHTML = `
-                <a class="in"  href="/signin">Sign In</a>
+                <a class="in" href="/signin">Sign In</a>
                 <a class="up" href="/signup">Sign Up</a>
             `;
         }
     });
 }
 
+loadUser();
 
+function toggleMenu() {
+    const menu = document.getElementById("dropdownMenu");
+
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+
+function goToBookings() {
+    window.location.href = "/mybookings";
+}
+
+
+function goToProfile() {
+    window.location.href = "/profile";
+}
 
 function logout() {
     fetch("/logout")
-    .then(() => {
-        window.location.reload();
-    });
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        window.location.href = "/";
+    })
+    .catch(err => console.error(err));
 }
-loadUser();
-
 
 let fullData = {};
 
@@ -96,47 +129,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
 function goNext() {
 
-
     let vehicle = document.getElementById("vehicle").value;
-    
     let brand = document.getElementById("brand").value;
-
     let model = document.getElementById("model").value;
-    
     let fuel = document.getElementById("fuel").value;
-    
-    console.log("Saving:",vehicle, brand, model, fuel); 
 
+    // save to localStorage
     localStorage.setItem("vehicle", vehicle);
     localStorage.setItem("brand", brand);
     localStorage.setItem("model", model);
     localStorage.setItem("fuel", fuel);
 
+    // move next page
+    window.location.href = "/order";
 }
 
 
-document.getElementById("brand").addEventListener("change", function () {
-  let brand = this.value;
 
-  localStorage.setItem("brand", brand); // save
-  updateImage(brand); // update image
-});
 
-// 🔥 Image update function
-function updateImage(brand) {
-  let img = document.getElementById("vehicleImage");
 
-  if (brand === "Honda") {
-    img.src = "/static/images/service.png";
-  } else if (brand === "Yamaha") {
-    img.src = "/static/images/yamaha.png";
-  } else {
-    img.src = "";
-  }
-}
 
 
 

@@ -295,3 +295,36 @@
       flex-wrap: wrap;
     }
   }
+
+  .dropdown {
+    display: none;   /* 🔥 இதுதான் முக்கியம் */
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;   /* 🔥 vertical center */
+    gap: 10px;             /* name & icon spacing */
+    position: relative;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.user-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
