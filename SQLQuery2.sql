@@ -149,6 +149,7 @@ VALUES
 );
 
 select * from bookings;
+delete from bookings;
 
 ALTER TABLE bookings
 add service_id int;
