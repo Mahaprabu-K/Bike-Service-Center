@@ -1,0 +1,45 @@
+
+.booking-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 12px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.sno {
+    background: #ffd369;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.price {
+    color: green;
+    font-weight: bold;
+}
+
+.card-body p {
+    margin: 5px 0;
+    color: #444;
+}
+
+h2{
+    text-align: center;
+}
+
+body {
+    background: linear-gradient(135deg, #f5d365, #fda085);
+}

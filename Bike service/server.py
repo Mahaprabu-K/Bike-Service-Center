@@ -331,35 +331,55 @@ def get_my_bookings():
 
 @app.route("/update_user", methods=["POST"])
 def update_user():
-    try:
-        data = request.get_json()
-        user_id = session.get("user_id")
 
-        if not user_id:
-            return jsonify({"message": "Not logged in"}), 401
+    # 🔐 login check
+    if "user_id" not in session:
+        return jsonify({"message": "Please login first"}), 401
 
-        cursor = conn.cursor()
+    conn = get_connection()
+    cursor = conn.cursor()
 
-        cursor.execute("""
-            UPDATE Users
-            SET firstname=?, lastname=?, mobno=?, username=?, password=?
-            WHERE id=?
-        """, (
-            data.get("firstname"),
-            data.get("lastname"),
-            data.get("mobno"),
-            data.get("username"),
-            data.get("password"),
-            user_id
-        ))
+    data = request.get_json()
 
-        conn.commit()
+    firstname = data.get("firstname")
+    lastname = data.get("lastname")
+    mobno = data.get("mobno")
+    username = data.get("username")
+    password = data.get("password")
 
-        return jsonify({"message": "Profile updated successfully"})
+    user_id = session["user_id"]
 
-    except Exception as e:
-        print("ERROR:", e)
-        return jsonify({"message": "Server error", "error": str(e)}), 500
+    # 🔍 username already exist check (other user)
+    cursor.execute(
+        "SELECT * FROM Users WHERE Username=? AND id != ?",
+        (username, user_id)
+    )
+    if cursor.fetchone():
+        return jsonify({"message": "Username already exists"})
+
+    # ✅ update query
+    cursor.execute("""
+        UPDATE Users
+        SET FirstName=?, LastName=?, Phone=?, Username=?, Password=?
+        WHERE id=?
+    """, (
+        firstname,
+        lastname,
+        mobno,
+        username,
+        password,
+        user_id
+    ))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # 🔄 session update (important)
+    session["firstname"] = firstname
+    session["lastname"] = lastname
+
+    return jsonify({"message": "Profile Updated Successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True)

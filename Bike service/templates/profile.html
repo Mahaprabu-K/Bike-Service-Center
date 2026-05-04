@@ -1,40 +1,82 @@
-<h2>Edit Profile</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
 
-<input type="text" id="fname" placeholder="First Name"><br>
-<input type="text" id="lname" placeholder="Last Name"><br>
-<input type="text" id="mobno" placeholder="Mobile Number"><br>
-<input type="text" id="username" placeholder="Username"><br>
-<input type="password" id="password" placeholder="Password"><br>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+            background: linear-gradient(to right, #e6c065, #f5e1a4);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-<button onclick="updateUser()">Update</button>
+        .card {
+            background: #f3d999;
+            padding: 30px;
+            border-radius: 20px;
+            width: 300px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
 
-<script>
-function updateUser() {
+        h2 {
+            margin-bottom: 20px;
+        }
 
-    const firstname = document.getElementById("fname").value;
-    const lastname = document.getElementById("lname").value;
-    const mobno = document.getElementById("mobno").value;
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            background: #eee;
+        }
 
-    fetch("/update_user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-            firstname,
-            lastname,
-            mobno,
-            username,
-            password
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message);
-    })
-    .catch(err => {
-        console.log("Error:", err);
-    });
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #f4b400;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e0a800;
+        }
+        #toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+    background-color: green;
 }
-</script>
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Edit Profile</h2>
+
+    <input type="text" id="fname" placeholder="First Name" required>
+    <input type="text" id="lname" placeholder="Last Name" required>
+    <input type="text" id="mobno" placeholder="Mobile Number" required>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="password" id="password" placeholder="Confirm Password" required>
+
+    <button onclick="updateUser()">Update</button>
+    <div id="toast"></div>
+</div>
+<script src="../static/javascript/profile.js"></script>
+</body>
+</html>
+

@@ -10,7 +10,7 @@ CREATE TABLE Users (
     Password VARCHAR(100)
 );
 
-SELECT * FROM Users;
+SELECT * FROM USERS;
 delete FROM USERS;
 TRUNCATE TABLE users;
 
@@ -33,153 +33,92 @@ INSERT INTO vehicless (vehicle_type, brand, model, fuel) VALUES
 ('Bike', 'Yamaha', 'RX100', 'Petrol');
 
 
+DELETE FROM vehicless;
+WHERE vehicle_type = 'Car';
 
 
-
-
-
-select * from services;
-
-
-CREATE TABLE services (
-    id INT PRIMARY KEY,
-    service_name VARCHAR(100),
-    price INT,
-    image VARCHAR(100),
-    brand VARCHAR(50)
-);
-
-drop table services;
-
-delete from services;
-drop table services;
-
-truncate table services;
 
 CREATE TABLE services (
     id INT PRIMARY KEY IDENTITY(1,1),
-    service_name VARCHAR(100),
+    service_name VARCHAR(50),
     price INT,
-    image VARCHAR(100),
-    brand VARCHAR(50)
+    image VARCHAR(100)
 );
 
-INSERT INTO services (service_name, price, image, brand) VALUES
-('Standard Service', 2999, 'service1.jpg', 'Honda'),
-('Premium Service', 4099, 'service2.jpg', 'Honda'),
-('AC Service', 1699, 'service3.jpg', 'Honda'),
-('Oil Service', 999, 'service4.jpg', 'Activa');
+
+INSERT INTO services (service_name, price, image)
+VALUES
+('Basic Service', 1099, 'service.jpg'),
+('Standard Service', 1500, 'service2.jpg'),
+('Premium Service', 1999, 'service3.jpg');
+
+select * from services;
+delete  from services;
+truncate table services;
 
 
-CREATE TABLE services (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    service_name VARCHAR(100),
-    price INT,
-    image VARCHAR(255)
+CREATE TABLE detailss (
+
+    id INT PRIMARY KEY IDENTITY(1,1),
+
+    name VARCHAR(100),
+
+    price VARCHAR(20),
+
+    image VARCHAR(200)
+
 );
 
-ALTER TABLE services
-ADD brand VARCHAR(100);
+INSERT INTO detailss (name, price, image)
 
-INSERT INTO services (service_name, price, image, brand)
-VALUES 
-('Bike Service', 1099, 'service.jpg', 'Honda'),
-('Standard Service', 1499, 'service2.jpg', 'Honda'),
-('Premium Service', 2000, 'service3.jpg', 'Yamaha');
+VALUES
+('Standard Service',
+ '1999',
+ 'service2.jpg');
 
 
-INSERT INTO services (service_name, price, image, brand)
-VALUES 
-('General Service', 1499, 'service4.jpg', 'Honda');
+ delete from detailss;
+  select * from detailss;
+  truncate table detailss;
 
 
-CREATE TABLE service_inclusions (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+
+CREATE TABLE inclusions (
+
+    id INT PRIMARY KEY IDENTITY(1,1),
+
     service_id INT,
-    inclusion_text VARCHAR(255),
 
-    FOREIGN KEY (service_id) REFERENCES services(id)
+    inclusion_name VARCHAR(200)
+
 );
 
--- 👉 Service 1 → 6 inclusions
-INSERT INTO service_inclusions (service_id, inclusion_text)
-VALUES 
-(1, 'Engine oil replacement'),
-(1, 'Brake inspection'),
-(1, 'Chain lubrication'),
-(1, 'Battery check'),
-(1, 'Tyre pressure check'),
-(1, 'General inspection');
+
+INSERT INTO inclusions (service_id, inclusion_name)
+
+VALUES
+
+(1,'Engine Oil Change'),
+(1,'Bike Wash'),
+(1,'Air Filter Cleaning'),
+(1,'Brake Cleaning'),
+(1,'Clutch Adjustment'),
+(1,'Chain Sprocket Tightening and Checking'),
+(1,'Basic Electrical Check'),
+(1,'Battery Check'),
+(1,'Spark Plug Cleaning');
 
 
--- 👉 Service 2 → 10 inclusions
-INSERT INTO service_inclusions (service_id, inclusion_text)
-VALUES 
-(2, 'Engine oil change'),
-(2, 'Oil filter cleaning'),
-(2, 'Air filter cleaning'),
-(2, 'Brake pad check'),
-(2, 'Chain adjustment'),
-(2, 'Clutch adjustment'),
-(2, 'Battery check'),
-(2, 'Electrical check'),
-(2, 'Tyre pressure check'),
-(2, 'Bike wash');
+INSERT INTO inclusions (service_id, inclusion_name)
 
+VALUES
 
+(2,'Full Bike Inspection'),
+(2,'Oil Change'),
+(2,'Brake Adjustment'),
+(2,'Battery Check'),
+(2,'Chain Lubrication'),
+(2,'General Cleaning');
 
- select * from service_inclusions;
- SELECT * FROM service_inclusions WHERE service_id = 3;
-
-
- CREATE TABLE bookings (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-
-    service_id INT NOT NULL,
-    user_id INT NOT NULL,
-
-    firstname VARCHAR(100),
-    lastname VARCHAR(100),
-    mobno VARCHAR(20),
-
-    booking_date DATETIME DEFAULT GETDATE(),
-
-    FOREIGN KEY (service_id) REFERENCES services(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-select * from bookings;
-delete from bookings;
-
-ALTER TABLE bookings
-add service_id int;
-
-ALTER TABLE bookings
-DROP COLUMN service_id;
-
-
-drop table bookings;
-
-delete from bookings;
-
-truncate table bookings;
-
-
-EXEC sp_help users;
-
-
-CREATE TABLE bookings (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT,
-    firstname VARCHAR(100),
-    lastname VARCHAR(100),
-
-    brand VARCHAR(100),
-    model VARCHAR(100),
-    service VARCHAR(100),
-    price INT,
-
-    created_at DATETIME DEFAULT GETDATE(),
-
-    FOREIGN KEY (user_id) REFERENCES Users(id)
-);
+select * from detailss;
+select * from inclusions;

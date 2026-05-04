@@ -15,9 +15,9 @@ function loadUser() {
                     <div class="user-icon" onclick="toggleMenu()">👤</div>
 
                     <div id="dropdownMenu" class="dropdown">
-                        <button onclick="goToBookings()">My Bookings</button>
-                        <button onclick="goToProfile()">Edit Profile</button>
-                        <button onclick="logout()">Logout</button>
+                        <button class="drop-btn" onclick="goToBookings()">📋 My Bookings</button>
+                        <button class="drop-btn" onclick="goToProfile()">✏️ Edit Profile</button>
+                        <button class="drop-btn logout" onclick="logout()">🚪 Logout</button>
                     </div>
 
                 </div>
@@ -42,6 +42,23 @@ function toggleMenu() {
         menu.style.display = "block";
     }
 }
+
+function toggleMenu() {
+    let menu = document.getElementById("dropdownMenu");
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+
+// 🔥 outside click close
+document.addEventListener("click", function(e) {
+
+    let menu = document.getElementById("dropdownMenu");
+    let profile = document.querySelector(".user-icon");
+
+    // dropdown அல்லது profile icon click இல்லனா close
+    if (!menu.contains(e.target) && !profile.contains(e.target)) {
+        menu.style.display = "none";
+    }
+});
 
 function goToBookings() {
     window.location.href = "/mybookings";

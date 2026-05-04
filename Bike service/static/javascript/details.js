@@ -68,6 +68,7 @@ function bookNow(serviceId) {
     .then(data => {
         if (data) {
             alert(data.message);
+             window.location.href = "/";
         }
     })
     .catch(err => {

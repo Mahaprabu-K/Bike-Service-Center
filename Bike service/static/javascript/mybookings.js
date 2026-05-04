@@ -18,19 +18,25 @@ fetch("/get_my_bookings", {
     let total = data.length;
     let html = "";   // 🔥 collect all HTML
 
-    data.forEach((b, index) => {
-        html += `
-            <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-                <p><b>S.No:</b> ${total - index}</p>
-                <p><b>Bike:</b> ${b.brand || '-'}</p>
-                <p><b>Model:</b> ${b.model || '-'}</p>
-                <p><b>Service:</b> ${b.service || '-'}</p>
-                <p><b>Price:</b> ₹${b.price || 0}</p>
-                <p><b>Date:</b> ${b.date || 'N/A'}</p>
-            </div>
-        `;
-    });
+   data.forEach((b, index) => {
+    html += `
+        <div class="booking-card">
 
+            <div class="card-header">
+                <span class="sno">#${total - index}</span>
+                <span class="price">₹${b.price || 0}</span>
+            </div>
+
+            <div class="card-body">
+                <p>🏍 <b>Bike:</b> ${b.brand || '-'}</p>
+                <p>⚙ <b>Model:</b> ${b.model || '-'}</p>
+                <p>🛠 <b>Service Pack:</b> ${b.service || '-'}</p>
+                <p>📅 <b>Date:</b> ${b.date || 'N/A'}</p>
+            </div>
+
+        </div>
+    `;
+});
     div.innerHTML = html;
 })
 .catch(err => {
