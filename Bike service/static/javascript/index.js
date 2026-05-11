@@ -86,7 +86,7 @@ function populate(id, values, text) {
     const el = document.getElementById(id);
 
     // 🔥 clear old data (important)
-    el.innerHTML = `<option value="">${text}</option>`;
+    el.innerHTML = `<option value="" >${text}</option>`;
 
     values.forEach(v => {
         let opt = document.createElement("option");
@@ -163,14 +163,90 @@ function goNext() {
     window.location.href = "/order";
 }
 
+// 🔹 DB data fetch
+// 🔥 DB data
+fetch("/get_slider_services")
+.then(res => res.json())
+.then(data => {
+
+    console.log(data);
+
+    let slides = document.querySelectorAll(".slide");
+    let names = document.querySelectorAll(".serviceName");
+    let prices = document.querySelectorAll(".servicePrice");
+    let images = document.querySelectorAll(".slideImage");
+
+    data.forEach((item, index) => {
+
+        if (names[index]) {
+            names[index].innerText = item.service_name;
+        }
+
+        if (prices[index]) {
+            prices[index].innerText = "₹ " + item.price;
+        }
+
+        if (images[index]) {
+            let imagePath = item.image.includes("static")
+                ? item.image
+                : "/static/images/" + item.image;
+
+            images[index].src = imagePath;
+        }
+
+        if (slides[index]) {
+            slides[index].onclick = function () {
+                localStorage.setItem("id", item.id);
+                localStorage.setItem("service_name", item.service_name);
+                localStorage.setItem("price", item.price);
+                localStorage.setItem("image", item.image);
+
+                window.location.href = "/order2";
+            };
+        }
+
+    });
+
+});
 
 
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    let slides = document.querySelectorAll(".slide");
+    let i = 0;
+
+    if (slides.length === 0) {
+        console.log("No slides found");
+        return;
+    }
+
+    function showSlide() {
+
+        slides.forEach(s => s.classList.remove("active"));
+
+        slides[i].classList.add("active");
+
+        i++;
+
+        if (i >= slides.length) {
+            i = 0;
+        }
+    }
+
+    setInterval(showSlide, 3000);
+
+});
 
 
+function goToOrder2(id, name, price, image) {
 
+    console.log("CLICKED ID:", id);
 
+    localStorage.setItem("id", id);
+    localStorage.setItem("service_name", name);
+    localStorage.setItem("price", price);
+    localStorage.setItem("image", image);
 
-
-
-
+    window.location.href = "/order2";
+}

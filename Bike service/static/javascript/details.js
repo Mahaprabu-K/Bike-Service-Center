@@ -10,14 +10,21 @@ window.onload = function () {
         return;
     }
 
-    currentServiceId = id;   // ✅ முக்கியம்
+    currentServiceId = id;
     console.log("SERVICE ID:", currentServiceId);
 
     fetch(`/get_service_details/${id}`)
     .then(res => res.json())
     .then(data => {
 
-        document.getElementById("serviceImage").src = data.image;
+        console.log("DATA:", data); // 🔥 debug
+
+        // 🔥 image path fix
+        let imagePath = data.image.includes("static")
+            ? data.image
+            : "/static/images/" + data.image;
+
+        document.getElementById("serviceImage").src = imagePath;
         document.getElementById("serviceName").innerText = data.name;
         document.getElementById("servicePrice").innerText = "₹ " + data.price;
 
@@ -29,12 +36,13 @@ window.onload = function () {
             li.innerText = item;
             list.appendChild(li);
         });
-    });
+    })
+    .catch(err => console.log(err));
 };
 
 
-// 🔥 Booking function
-function bookNow(serviceId) {
+// 🔥 BOOK FUNCTION (cleaned)
+function bookNow() {
 
     console.log("BOOKING ID:", currentServiceId);
 
@@ -68,10 +76,11 @@ function bookNow(serviceId) {
     .then(data => {
         if (data) {
             alert(data.message);
-             window.location.href = "/";
+            window.location.href = "/";
         }
     })
-    .catch(err => {
-        console.error("Error:", err);
-    });
+    .catch(err => console.error("Error:", err));
 }
+
+
+

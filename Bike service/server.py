@@ -8,8 +8,8 @@ app.secret_key = "mysecretkey"
 def get_connection():
     return pyodbc.connect(
         "Driver={SQL Server};"
-        "Server=Z14-55N\\SQLEXPRESS;"
-        "Database=Bikeservicedb;"
+        "Server=KISHORE\\SQLEXPRESS;"
+        "Database=BikeserviceDB;"
         "MARS_Connection=Yes;"
     )
 
@@ -35,6 +35,10 @@ def signin():
 def order():
     return render_template("order.html")
 
+@app.route('/order2')
+def order2():
+    return render_template("order2.html")
+
 @app.route('/submit', methods=['POST'])
 def submit():
     return redirect('/order')
@@ -54,6 +58,16 @@ def register():
 
     data = request.get_json()
 
+    # 🔹 முதலில் check பண்ணு
+    cursor.execute("SELECT * FROM Users WHERE Username = ?", (data['username'],))
+    existing = cursor.fetchone()
+
+    if existing:
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Already registered"})
+
+    # 🔹 இல்லனா insert பண்ணு
     cursor.execute("""
         INSERT INTO Users 
         (FirstName, LastName, Phone, Whatsapp, Email, Gender, Username, Password)
@@ -74,7 +88,6 @@ def register():
     conn.close()
 
     return jsonify({"message": "Registered Successful"})
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -380,6 +393,123 @@ def update_user():
     session["lastname"] = lastname
 
     return jsonify({"message": "Profile Updated Successfully"})
+
+
+
+@app.route('/get_slider_services')
+def get_slider_services():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, service_name, price, image
+        FROM slider_services
+    """)
+
+    rows = cursor.fetchall()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "id": row[0],
+            "service_name": row[1],
+            "price": row[2],
+            "image": row[3]
+        })
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+@app.route('/get_order_data')
+def get_order_data():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT brand, model, fuel FROM vehicless")
+    rows = cursor.fetchall()
+
+    data = []
+    for r in rows:
+        data.append({
+            "brand": r[0],
+            "model": r[1],
+            "fuel": r[2]
+        })
+
+    return jsonify({"data": data})
+
+
+@app.route('/get_services2')
+def get_services2():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, service_name, price, image FROM slider_services")
+
+    data = [
+        {
+            "id": row[0],
+            "name": row[1],
+            "price": row[2],
+            "image": row[3]
+        }
+        for row in cursor.fetchall()
+    ]
+
+    return jsonify(data)
+
+
+@app.route('/get_all_datas')
+def get_all_datas():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT brand, model, fuel FROM vehicless")
+
+    data = []
+    for row in cursor.fetchall():
+        data.append({
+            "brand": row[0],
+            "model": row[1],
+            "fuel": row[2]
+        })
+
+    conn.close()
+    return jsonify(data)
+
+@app.route('/get_service_details2/<int:id>')
+def get_service_details2(id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, service_name, price, image
+        FROM slider_services
+        WHERE id = ?
+    """, (id,))
+
+    row = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if row:
+        return jsonify({
+            "id": row[0],
+            "name": row[1],
+            "price": row[2],
+            "image": row[3],
+            "inclusions": ["Engine Check", "Oil Change", "Brake Check"]
+        })
+
+    return jsonify({"error": "Not found"})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

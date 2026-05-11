@@ -21,16 +21,17 @@
 
   <header>
     <div class="logos">
-      <img src="../static/images/name.png" alt="Omega Bike Services name">
-    </div>
-
+  <a href="/">
+    <img src="../static/images/name.png" alt="Omega Bike Services name">
+  </a>
+</div>
     <div class="content">
-      <a href="#">About Us</a>
-      <a href="#">Our vision</a>
-      <a href="#">Why Choose Us</a>
-      <a href="#">Happy Clients</a>
-      <a href="#"><i class="fa-solid fa-location-dot"></i> Location</a>
-    </div>
+  <a href="#about">About Us</a>
+  <a href="#vision">Our Vision</a>
+  <a href="#why-choose">Why Choose Us</a>
+  <a href="#clients">Happy Clients</a>
+  <a href="#location"><i class="fa-solid fa-location-dot"></i> Location</a>
+</div>
 
   <div class="user" id="userSection">
     <a class="in" href="/signin">Sign In</a>
@@ -43,7 +44,7 @@
     <div class="indexcover">
       <img src="../static/images/indeximg.png" alt="index cover">
     </div>
-  <form id="index" class="formcontainer" method="POST" action="/submit">
+  <form id="index" class="formcontainer" method="POST" action="/submit" onsubmit="goNext()">
 
   <!-- VEHICLE -->
   <select id="vehicle" name="vehicle" required>
@@ -65,40 +66,148 @@
     <option value="" disabled selected>Select Fuel</option>
   </select>
 
- <button type="button" onclick="goNext()" class="letgo">LETS GO</button>
+ <button type="submit" class="letgo">LETS GO</button>
 
 </form>
   </div>
   </div>
-
+<div class="main">
   <div class="container2">
 
     <h2 class="head">Bike Service Solutions</h2>
 
     <div class="offers">
-      <a href="general service" class="GS"><img src="../static/images/general bike.png">General Service</a>
+      <a href="general service" class="GS"><img src="../static/images/general bike.png"><h5>General Service</h5></a>
 
 
-       <a href="general service" class="Vb"><img src="../static/images/bike breakdown.png">Vehicle Breakdown</a>
+       <a href="general service" class="Vb"><img src="../static/images/bike breakdown.png"><h5>Vehicle Breakdown</h5></a>
 
 
-       <a href="general service" class="Vb"><img src="../static/images/bike wash.png">Major Repairs</a>
+       <a href="general service" class="VB"><img src="../static/images/bike wash.png"><h5>Major Repairs</h5></a>
 
     </div>
 
     <div class="offers2">
 
-      <a href="general service" class="GS"><img class="" src="../static/images/bike wash.png">Wash & polish</a>
+      <a href="general service" class="Gs"><img class="" src="../static/images/bike wash.png"><h5>Wash & polish</h5></a>
 
+       <a href="general service" class="VB"><img src="../static/images/bike-engine.png"><h5>Engine Reboring</h5></a>
 
-       <a href="general service" class="Vb"><img src="../static/images/bike-engine.png">Engine Reboring</a>
-
-       <a href="general service" class="Vb"><img src="../static/images/bike offers.png">Offers</a>
+       <a href="general service" class="off"><img src="../static/images/bike offers.png"><h5>Offers</h5></a>
 
     </div>
 
   </div>
 
+
+  <div class="right-slider">
+
+    <div class="slide active">
+        <img class="slideImage">
+        <div class="caption">
+            <h2 class="serviceName"></h2>
+            <p class="servicePrice"></p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <img class="slideImage">
+        <div class="caption">
+            <h2 class="serviceName"></h2>
+            <p class="servicePrice"></p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <img class="slideImage">
+        <div class="caption">
+            <h2 class="serviceName"></h2>
+            <p class="servicePrice"></p>
+        </div>
+    </div>
+
+    <!-- dots -->
+    <div class="slider-dots">
+        <span class="dot active-dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+</div>
+
+
+
+</div>
+
+  
+
+  
+
+<div>
+<section id="about" class="section">
+  <h2>About Us</h2>
+  <p>We provide the best bike & car service in Chennai with trusted mechanics.</p>
+</section>
+
+<section id="vision" class="section">
+  <h2>Our Vision</h2>
+  <p>To become India's most trusted vehicle service platform.</p>
+</section>
+
+<section id="why-choose" class="why-choose">
+  <h2>WHY <span>CHOOSE US</span></h2>
+
+  <div class="features">
+
+    <div class="card">
+      <i class="fa-solid fa-car"></i>
+      <p>Pick & Drop</p>
+      <h4>Service</h4>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-gears"></i>
+      <p>Warranted</p>
+      <h4>Spare Parts</h4>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-motorcycle"></i>
+      <p>Multi Brand</p>
+      <h4>Options</h4>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-location-crosshairs"></i>
+      <p>Realtime</p>
+      <h4>Tracking</h4>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <p>Standardised</p>
+      <h4>Workshops</h4>
+    </div>
+
+    <div class="card">
+      <i class="fa-solid fa-headset"></i>
+      <p>24/7</p>
+      <h4>Support</h4>
+    </div>
+
+  </div>
+</section>
+
+<section id="clients" class="section">
+  <h2>Happy Clients</h2>
+  <p>1000+ satisfied customers across Chennai.</p>
+</section>
+
+<section id="location" class="section">
+  <h2>Our Location</h2>
+  <p>Chennai, Tamil Nadu</p>
+</section>
+</div>
   <script src="../static/javascript/index.js"></script>
 
 </body>

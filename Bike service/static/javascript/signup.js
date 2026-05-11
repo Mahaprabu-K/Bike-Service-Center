@@ -33,5 +33,8 @@ document.querySelector("form").addEventListener("submit", function(e) {
         if(result.message){
             window.location.href = "/signin";
         }
+        else{
+            
+        }
     });
 });
