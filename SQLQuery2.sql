@@ -13,6 +13,7 @@ CREATE TABLE Users (
 SELECT * FROM Users;
 delete FROM Users;
 TRUNCATE TABLE users;
+drop table users;
 
 
 CREATE TABLE vehicless (
@@ -24,6 +25,7 @@ CREATE TABLE vehicless (
 );
 
 SELECT * FROM vehicless;
+drop table vehicless;
 
 
 INSERT INTO vehicless (vehicle_type, brand, model, fuel) VALUES
@@ -75,9 +77,11 @@ CREATE TABLE services (
     id INT IDENTITY(1,1) PRIMARY KEY,
     service_name VARCHAR(100),
     price INT,
-    image VARCHAR(255)
+    image VARCHAR(255),
+    brand varchar(100)
 );
 
+drop table services;
 ALTER TABLE services
 ADD brand VARCHAR(100);
 
@@ -188,3 +192,37 @@ CREATE TABLE bookings (
 DELETE FROM bookings WHERE user_id = 1;
 
 DELETE FROM Users WHERE id = 1;
+
+
+CREATE TABLE slider_services (
+
+    id INT PRIMARY KEY ,
+    service_name VARCHAR(100),
+    price INT
+
+);
+
+INSERT INTO slider_services(service_name, price)
+VALUES
+(1,'General Service', 999),
+(2,'Water Wash', 299),
+(3,'Engine Checkup', 1499);
+
+drop table slider_services;
+
+CREATE TABLE slider_services (
+
+    id INT PRIMARY KEY IDENTITY(1,1),
+    service_name VARCHAR(100),
+    price INT,
+    image VARCHAR(255)
+
+);
+
+INSERT INTO slider_services(service_name, price, image)
+VALUES
+('General Service', 999, '../static/images/service.jpg'),
+('Water Wash', 299, '../static/images/service2.jpg'),
+('Engine Checkup', 1499, '../static/images/service3.jpg');
+
+select * from slider_services;
