@@ -48,6 +48,10 @@ def submit():
 def details():
     return render_template('details.html')
 
+@app.route('/details2')
+def details2():
+    return render_template('details2.html')
+
 
 # -------------------- AUTH --------------------
 
@@ -235,9 +239,15 @@ def get_service_details(id):
 
 @app.route("/book_service", methods=["POST"])
 def book_service():
+
     try:
+
         if "user_id" not in session:
-            return jsonify({"message": "Please login first"}), 402
+            return jsonify({
+                "status": "error",
+                "message": "Please login first"
+            }), 401
+
 
         data = request.get_json()
 
@@ -245,67 +255,125 @@ def book_service():
         model = data.get("model")
         service_id = data.get("service_id")
 
-        if not service_id:
-            return jsonify({"message": "Invalid service id"})
-
-        service_id = int(service_id)
         user_id = session.get("user_id")
 
         conn = get_connection()
         cursor = conn.cursor()
 
-        # user
-        cursor.execute("SELECT FirstName, LastName FROM Users WHERE id=?", (user_id,))
+        # ================= USER =================
+
+        cursor.execute(
+            "SELECT FirstName, LastName FROM Users WHERE id=?",
+            (user_id,)
+        )
+
         user = cursor.fetchone()
 
         if not user:
-            return jsonify({"message": "User not found"})
+            return jsonify({
+                "status": "error",
+                "message": "User not found"
+            })
 
-        # service
+
+        # ================= SERVICE DETAILS =================
+
         cursor.execute(
             "SELECT service_name, price FROM services WHERE id=?",
             (service_id,)
         )
+
         service = cursor.fetchone()
 
         if not service:
-            return jsonify({"message": "Service not found"})
+            return jsonify({
+                "status": "error",
+                "message": "Service not found"
+            })
 
         service_name = service[0]
         price = service[1]
 
-        # 🔥 Already booked check
+
+        # ================= ALREADY BOOKED =================
+
         cursor.execute("""
+
             SELECT * FROM bookings
-            WHERE user_id=? AND brand=? AND model=? AND service=?
-        """, (user_id, brand, model, service_name))
+
+            WHERE user_id=?
+            AND brand=?
+            AND model=?
+            AND service=?
+
+        """, (
+
+            user_id,
+            brand,
+            model,
+            service_name
+
+        ))
 
         existing = cursor.fetchone()
 
         if existing:
-            return jsonify({"message": "Already Booked"})
 
-        # insert
+            return jsonify({
+                "status": "already_booked",
+                "message": "Already Booked"
+            })
+
+
+        # ================= INSERT =================
+
         cursor.execute("""
-            INSERT INTO bookings 
-            (user_id, firstname, lastname, brand, model, service, price)
+
+            INSERT INTO bookings
+            (
+                user_id,
+                firstname,
+                lastname,
+                brand,
+                model,
+                service,
+                price
+            )
+
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (user_id, user[0], user[1], brand, model, service_name, price))
+
+        """, (
+
+            user_id,
+            user[0],
+            user[1],
+            brand,
+            model,
+            service_name,
+            price
+
+        ))
 
         conn.commit()
 
         cursor.close()
         conn.close()
 
-        return jsonify({"message": "Booking Successful"})
+        return jsonify({
+            "status": "success",
+            "message": "Booking Successful"
+        })
+
 
     except Exception as e:
+
         print("ERROR:", e)
-        return jsonify({"message": "Server Error"})
 
-
-
-
+        return jsonify({
+            "status": "error",
+            "message": "Server Error"
+        })
+    
 @app.route("/get_my_bookings")
 def get_my_bookings():
 
@@ -509,6 +577,50 @@ def get_service_details2(id):
         })
 
     return jsonify({"error": "Not found"})
+
+
+@app.route("/get_vehicle_data")
+def get_vehicle_data():
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+
+    cursor.execute("""
+
+        SELECT DISTINCT brand, model, fuel
+
+        FROM vehicles
+
+    """)
+
+
+    rows = cursor.fetchall()
+
+
+    data = []
+
+
+    for row in rows:
+
+        data.append({
+
+            "brand": row[0],
+
+            "model": row[1],
+
+            "fuel": row[2]
+
+        })
+
+
+    cursor.close()
+
+    conn.close()
+
+
+    return jsonify(data)
 
 
 if __name__ == '__main__':

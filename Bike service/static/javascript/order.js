@@ -1,155 +1,208 @@
+let currentService = {
+    name: "",
+    price: 0
+};
 
 window.onload = function () {
 
+    // ================= VEHICLE DATA =================
     let brand = localStorage.getItem("brand");
     let model = localStorage.getItem("model");
     let fuel = localStorage.getItem("fuel");
-    
-
-    console.log("Loaded:", brand, model, fuel);
 
     document.getElementById("brand").innerHTML =
-        `<option selected>${brand}</option>`;
+        `<option selected>${brand || "Select Brand"}</option>`;
 
     document.getElementById("model").innerHTML =
-        `<option selected>${model}</option>`;
+        `<option selected>${model || "Select Model"}</option>`;
 
     document.getElementById("fuel").innerHTML =
-        `<option selected>${fuel}</option>`;
-        
+        `<option selected>${fuel || "Select Fuel"}</option>`;
+
+
+    // ================= SERVICE CONTAINER =================
+    let container = document.getElementById("serviceContainer");
+
+    container.innerHTML = "";
+
+
+    // ================= SELECTED SERVICE =================
+    let selectedId = localStorage.getItem("id");
+
+
+    // =====================================================
+    // CASE 1 : SLIDER SELECTED SERVICE
+    // =====================================================
+    if (selectedId) {
+
+        let name = localStorage.getItem("service_name");
+        let price = localStorage.getItem("price");
+        let image = localStorage.getItem("image");
+
+        currentService.name = name;
+        currentService.price = price;
+
+        let imagePath = image.includes("static")
+            ? image
+            : "/static/images/" + image;
+
+
+        container.innerHTML = `
+
+            <div class="card">
+
+                <img 
+                    src="${imagePath}" 
+                    class="img1"
+                    onclick="goToSingleDetails()"
+                >
+
+                <div class="tag">
+                    <span>${name}</span>
+                    <span>₹${price}</span>
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    // =====================================================
+    // CASE 2 : BRAND BASED SERVICES
+    // =====================================================
+    if (!brand) {
+
+        console.log("No brand selected");
+
+        return;
+    }
 
 
     fetch(`/get_services/${brand}`)
+
     .then(res => res.json())
+
     .then(data => {
-
-        console.log(data); // check
-
-        let container = document.getElementById("serviceContainer");
-        container.innerHTML = "";
 
         data.forEach(item => {
 
             container.innerHTML += `
-            <div class="card">
-                <a href="/details?id=${item.id}">
-                    <img src="/static/images/${item.image}" class="img1">
+
+                <div 
+                    class="card"
+                    onclick="selectService(
+                        '${item.name}',
+                        '${item.price}',
+                        ${item.id}
+                    )"
+                >
+
+                    <img 
+                        src="/static/images/${item.image}" 
+                        class="img1"
+                    >
 
                     <div class="tag">
+
                         <span>${item.name}</span>
+
                         <span>₹${item.price}</span>
+
                     </div>
-                </a>
-            </div>
+
+                </div>
+
             `;
 
         });
 
-    });
+    })
+
+    .catch(err => console.log(err));
 
 };
 
-let orderData = {};
 
-// 🔹 populate function
-function populate(id, values, text) {
-    const el = document.getElementById(id);
-    el.innerHTML = `<option value="">${text}</option>`;
 
-    values.forEach(v => {
-        let opt = document.createElement("option");
-        opt.value = v;
-        opt.text = v;
-        el.appendChild(opt);
-    });
+// =====================================================
+// SELECT SERVICE
+// =====================================================
+function selectService(name, price, id) {
+
+    currentService.name = name;
+    currentService.price = price;
+
+    localStorage.setItem("service_name", name);
+    localStorage.setItem("price", price);
+    localStorage.setItem("id", id);
+
+    window.location.href = `/details?id=${id}`;
 }
 
-// 🔹 reset
-function resetSelect(id, text) {
-    document.getElementById(id).innerHTML = `<option value="">${text}</option>`;
+
+
+// =====================================================
+// NORMAL DETAILS PAGE
+// =====================================================
+function goToDetails(id) {
+
+    window.location.href = `/details?id=${id}`;
+
 }
 
-document.addEventListener("DOMContentLoaded", function () {
 
-    let brandEl = document.getElementById("brand");
-    let modelEl = document.getElementById("model");
-    let fuelEl  = document.getElementById("fuel");
 
-    let savedBrand = localStorage.getItem("brand");
-    let savedModel = localStorage.getItem("model");
-    let savedFuel  = localStorage.getItem("fuel");
+// =====================================================
+// SLIDER SERVICE DETAILS PAGE
+// =====================================================
+function goToSingleDetails() {
 
-    fetch('/get_order_data')
+    window.location.href = "/details";
+
+}
+
+
+
+// =====================================================
+// BOOK SERVICE
+// =====================================================
+function bookNow() {
+
+    let service_name = localStorage.getItem("service_name");
+
+    let price = localStorage.getItem("price");
+
+    console.log(service_name, price);
+
+    fetch("/book_service", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            service_name: service_name,
+
+            price: price
+        })
+    })
+
     .then(res => res.json())
+
     .then(data => {
 
-        orderData = data;
+        console.log(data);
 
-        // 🔥 LOAD BRAND
-        populate("brand", Object.keys(orderData), "Select Brand");
+        alert(data.message);
 
-        // =========================
-        // 🔥 BRAND CHANGE
-        // =========================
-        brandEl.addEventListener("change", function () {
+    })
 
-            let brand = this.value;
+    .catch(err => console.log(err));
 
-            populate("model", Object.keys(orderData[brand] || {}), "Select Model");
-            resetSelect("fuel", "Select Fuel");
-
-            modelEl.value = "";
-            fuelEl.value = "";
-
-            localStorage.setItem("brand", brand);
-            localStorage.removeItem("model");
-            localStorage.removeItem("fuel");
-        });
-
-        // =========================
-        // 🔥 MODEL CHANGE
-        // =========================
-        modelEl.addEventListener("change", function () {
-
-            let brand = brandEl.value;
-            let model = this.value;
-
-            populate("fuel", (orderData[brand] || {})[model] || [], "Select Fuel");
-
-            fuelEl.value = "";
-
-            localStorage.setItem("model", model);
-            localStorage.removeItem("fuel");
-        });
-
-        // =========================
-        // 🔥 FUEL CHANGE
-        // =========================
-        fuelEl.addEventListener("change", function () {
-            localStorage.setItem("fuel", this.value);
-        });
-
-        // =========================
-        // 🔥 PROPER RESTORE FIX
-        // =========================
-        if (savedBrand && orderData[savedBrand]) {
-
-            brandEl.value = savedBrand;
-
-            populate("model", Object.keys(orderData[savedBrand]), "Select Model");
-
-            if (savedModel && orderData[savedBrand][savedModel]) {
-
-                modelEl.value = savedModel;
-
-                populate("fuel", orderData[savedBrand][savedModel], "Select Fuel");
-
-                if (savedFuel && orderData[savedBrand][savedModel].includes(savedFuel)) {
-                    fuelEl.value = savedFuel;
-                }
-            }
-        }
-
-    });
-
-});
+}

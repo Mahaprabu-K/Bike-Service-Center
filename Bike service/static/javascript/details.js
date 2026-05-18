@@ -65,22 +65,27 @@ function bookNow() {
             service_id: currentServiceId
         })
     })
-    .then(res => {
-        if (res.status === 402) {
-            alert("Please login first");
-            window.location.href = "/signin";
+
+    .then(res => res.json())
+    .then(data => {
+
+        console.log(data);
+
+        // 🔥 ALREADY BOOKED CHECK
+        if (data.status === "already_booked") {
+            alert("⚠️ You already booked this service!");
             return;
         }
-        return res.json();
-    })
-    .then(data => {
-        if (data) {
+
+        if (data.status === "success") {
             alert(data.message);
             window.location.href = "/";
         }
+
+        if (data.status === "error") {
+            alert(data.message);
+        }
+
     })
     .catch(err => console.error("Error:", err));
 }
-
-
-
