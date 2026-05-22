@@ -63,3 +63,27 @@ button{
     margin-top: 20px;
 }
 
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 250px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+}
+
+small {
+    color: red;
+    font-size: 13px;
+
+    position: absolute;
+    left: 0;
+    top: 100%;
+
+    margin-top: 2px;
+}
