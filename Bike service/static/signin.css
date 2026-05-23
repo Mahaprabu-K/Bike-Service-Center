@@ -63,27 +63,16 @@ button{
     margin-top: 20px;
 }
 
-.input-group {
+.input-box{
     position: relative;
     margin-bottom: 25px;
 }
 
-input {
-    width: 250px;
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    font-size: 16px;
-}
-
-small {
+.input-box small{
     color: red;
-    font-size: 13px;
+    font-size: 10px;
 
     position: absolute;
-    left: 0;
-    top: 100%;
-
-    margin-top: 2px;
+    left: 5px;
+    bottom: -20px;
 }

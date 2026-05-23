@@ -11,6 +11,16 @@ usernameInput.addEventListener("input", function () {
 
     let username = usernameInput.value;
 
+    // MAX 15 LETTERS
+    if (username.length > 15) {
+
+        usernameError.innerText =
+            "Maximum 15 letters only";
+
+        username = username.slice(0, 15);
+    }
+
+    // FIRST LETTER CAPITAL
     if (username.length > 0) {
 
         let firstLetter = username.charAt(0);
@@ -20,16 +30,20 @@ usernameInput.addEventListener("input", function () {
             usernameError.innerText =
                 "First letter must be CAPITAL";
 
-        } else {
+            // REMOVE WRONG LETTER
+            username = "";
+
+        } else if (username.length <= 15) {
 
             usernameError.innerText = "";
-
         }
+
     } else {
 
         usernameError.innerText = "";
-
     }
+
+    usernameInput.value = username;
 
 });
 
@@ -38,20 +52,32 @@ usernameInput.addEventListener("input", function () {
 // =========================================
 passwordInput.addEventListener("input", function () {
 
-    let password = passwordInput.value;
+    let value = passwordInput.value;
 
-    let numberPattern = /^[0-9]{6}$/;
-
-    if (!numberPattern.test(password)) {
+    // ONLY NUMBERS
+    if (/[^0-9]/.test(value)) {
 
         passwordError.innerText =
-            "Password must contain exactly 6 numbers";
+            "Only numbers are allowed";
+
+        // REMOVE LETTERS
+        value = value.replace(/[^0-9]/g, "");
 
     } else {
 
         passwordError.innerText = "";
-
     }
+
+    // ONLY 6 DIGITS
+    if (value.length > 6) {
+
+        passwordError.innerText =
+            "Only 6 numbers allowed";
+
+        value = value.slice(0, 6);
+    }
+
+    passwordInput.value = value;
 
 });
 
@@ -62,9 +88,10 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
     e.preventDefault();
 
-    let username = usernameInput.value;
-    let password = passwordInput.value;
+    let username = usernameInput.value.trim();
+    let password = passwordInput.value.trim();
 
+    // USERNAME CHECK
     let firstLetter = username.charAt(0);
 
     if (firstLetter !== firstLetter.toUpperCase()) {
@@ -75,6 +102,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         return;
     }
 
+    // PASSWORD CHECK
     let numberPattern = /^[0-9]{6}$/;
 
     if (!numberPattern.test(password)) {
@@ -84,6 +112,9 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
         return;
     }
+
+    // SAVE USERNAME
+    localStorage.setItem("username", username);
 
     const data = {
         username: username,
@@ -105,6 +136,8 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         if(result.status === "success") {
 
             alert("Login Successful");
+
+            // REDIRECT HOME PAGE
             window.location.href = "/";
 
         } else {

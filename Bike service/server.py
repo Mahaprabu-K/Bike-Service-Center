@@ -8,8 +8,8 @@ app.secret_key = "mysecretkey"
 def get_connection():
     return pyodbc.connect(
         "Driver={SQL Server};"
-        "Server=KISHORE\\SQLEXPRESS;"
-        "Database=BikeserviceDB;"
+        "Server=LOGITH\\SQLEXPRESS;"
+        "Database=Bikeservicedb;"
         "MARS_Connection=Yes;"
     )
 

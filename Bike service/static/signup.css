@@ -1,159 +1,292 @@
 *{
     margin:0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
+
 body{
-    height:100vh;
-    background: linear-gradient(135deg,#fbc531,#f5f6fa);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#fbc531,#f5f6fa);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:15px;
 }
+
+/* =========================================
+CARD
+========================================= */
 .card{
-    padding:10px 20px 30px 20px;
-    border-radius: 20px;
+
+    width:100%;
+    max-width:300px;
+
     background:rgba(255,255,255,0.25);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+    padding:20px 18px 25px;
+
+    border-radius:20px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.2);
+
+    text-align:center;
 }
-.input-box1{
- display: flex;
- gap:10px; 
- margin-bottom: 10px;
-}
-.input-box1 input{
-    border: none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-}
+
+/* =========================================
+HEADING
+========================================= */
 h2{
-    margin-bottom: 30px;
-    margin-top: 10px;
-}
-.contact{
- display: flex;
- gap:10px; 
- margin-bottom: 10px;
-}
-.contact input{
-    border:none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-}
-.email{
-    display: flex;
-    width:100%;
-     border:none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-}
-.radio-btn{
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-.male{
-    border:1px solid white;
-    background-color: white;
-    border-radius:6px ;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.male input{
-    margin-right: 3px;
+    font-size:34px;
+    font-weight:bold;
+
+    margin-bottom:25px;
 }
 
-.female{
-    border:1px solid white;
-    background-color: white;
-    border-radius:6px ;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.female input{
-    margin-right: 3px;
+/* =========================================
+FIRSTNAME + LASTNAME
+========================================= */
+.input-box1{
+    margin-bottom:8px;
 }
 
-.others{
-    border:1px solid white;
-    background-color: white;
-    border-radius:6px ;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-.others input{
-    margin-right: 3px;
-}
+.input-box1 input{
 
-.pass{
-     display: flex;
     width:100%;
-     border:none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-.set-pass{
- display: flex;
-    width:100%;
-     border:none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-.con-pass{
-     display: flex;
-    width:100%;
-     border:none;
-    outline: none;
-    padding: 5px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-button{
-    width:100%;
+
     padding:10px;
+
     border:none;
-    border-radius: 6px;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    margin-bottom:6px;
+}
+
+/* =========================================
+PHONE + WHATSAPP
+========================================= */
+.contact{
+    margin-bottom:8px;
+}
+
+.contact input{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    margin-bottom:6px;
+}
+
+/* =========================================
+EMAIL
+========================================= */
+.e-mail{
+    margin-bottom:8px;
+}
+
+.email{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:10px;
+}
+
+/* =========================================
+RADIO BUTTON
+========================================= */
+.radio-btn{
+
+    width:100%;
+
+    display:flex;
+    justify-content:space-between;
+
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.male,
+.female,
+.others{
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:5px 10px;
+
+    font-size:14px;
+}
+
+.male input,
+.female input,
+.others input{
+
+    margin-right:4px;
+}
+
+/* =========================================
+USERNAME
+========================================= */
+.pass{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    margin-top:8px;
+}
+
+/* =========================================
+PASSWORD
+========================================= */
+.set-pass{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    margin-top:8px;
+}
+
+/* =========================================
+CONFIRM PASSWORD
+========================================= */
+.con-pass{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    margin-top:8px;
+}
+
+/* =========================================
+BUTTON
+========================================= */
+button{
+
+    width:100%;
+
+    padding:11px;
+
+    border:none;
+
+    border-radius:8px;
+
     background:#fbc531;
+
+    font-size:17px;
+
     cursor:pointer;
-    margin-top: 20px;
+
+    margin-top:15px;
 }
+
+button:hover{
+    opacity:0.9;
+}
+
+/* =========================================
+TEXT
+========================================= */
 h4{
-    margin-top: 15px;
-    font-size: 13px;
-    margin-bottom: 5px;
+
+    margin-top:18px;
+
+    font-size:13px;
 }
+
+h4 a{
+
+    color:#5f27cd;
+    font-weight:bold;
+}
+
 .back{
-    margin-top: 7px;
-   font-size: 12px;
-}
-.back a{
-    text-decoration: none;
-     color:black;
-}.error{
-    color:red;
+
+    margin-top:8px;
+
     font-size:12px;
 }
-.input-box1 ,.contact{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-.success{
-    color: green;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
+
+.back a{
+
+    text-decoration:none;
+
+    color:black;
 }
 
+/* =========================================
+ERROR MESSAGE
+========================================= */
+.error{
+
+    display:block;
+
+    color:red;
+
+    font-size:11px;
+
+    text-align:center;
+
+    height:12px;
+
+    margin-top:-2px;
+    margin-bottom:2px;
+}
+
+/* =========================================
+SUCCESS
+========================================= */
+.success{
+
+    color:green;
+
+    font-weight:bold;
+
+    margin-top:12px;
+}
