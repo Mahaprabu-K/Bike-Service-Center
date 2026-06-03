@@ -156,13 +156,13 @@ select * from bookings;
 delete from bookings;
 
 ALTER TABLE bookings
-add service_id int;
+drop service_name varchar;
 
 ALTER TABLE bookings
 DROP COLUMN service_id;
 
 
-drop table bookings2;
+drop column service_n bookings;
 
 delete from bookings;
 
@@ -248,3 +248,31 @@ CREATE TABLE bookings2 (
 
 
 select * from bookings;
+ALTER TABLE bookings
+ADD bikenumber INT;
+
+CREATE TABLE bookings (
+
+    id INT IDENTITY(1,1) PRIMARY KEY,
+
+    service_id INT NOT NULL,
+    user_id INT NOT NULL,
+
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    mobno VARCHAR(20),
+
+    booking_date DATETIME DEFAULT GETDATE(),
+
+    FOREIGN KEY (service_id) REFERENCES services(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+ALTER TABLE bookings
+drop service_name ;
+    model VARCHAR(100);
+
+
+
+   

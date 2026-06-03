@@ -8,7 +8,7 @@ app.secret_key = "mysecretkey"
 def get_connection():
     return pyodbc.connect(
         "Driver={SQL Server};"
-        "Server=LOGITH\\SQLEXPRESS;"
+        "Server=Z14-55M\\SQLEXPRESS;"
         "Database=Bikeservicedb;"
         "MARS_Connection=Yes;"
     )
@@ -95,30 +95,47 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
+
     conn = get_connection()
     cursor = conn.cursor()
 
     data = request.get_json()
 
     cursor.execute(
-        "SELECT id, FirstName, LastName FROM Users WHERE Username=? AND Password=?",
+        """
+        SELECT id, FirstName, LastName, Phone
+        FROM Users
+        WHERE Username=? AND Password=?
+        """,
         (data['username'], data['password'])
     )
 
     user = cursor.fetchone()
 
     if user:
-        session['user_id'] = user[0]   # ✅ id
+
+        session['user_id'] = user[0]
         session['firstname'] = user[1]
         session['lastname'] = user[2]
 
         cursor.close()
         conn.close()
-        return jsonify({"status": "success"})
+
+        return jsonify({
+            "status": "success",
+            "firstname": user[1],
+            "lastname": user[2],
+            "mobile": user[3]
+        })
+
     else:
+
         cursor.close()
         conn.close()
-        return jsonify({"status": "fail"})
+
+        return jsonify({
+            "status": "fail"
+        })
 
 @app.route('/logout')
 def logout():
@@ -236,149 +253,154 @@ def get_service_details(id):
         "image": "static/images/"+ service[2],
         "inclusions": [row[0] for row in inclusions]
     })
-
 @app.route("/book_service", methods=["POST"])
 def book_service():
 
     try:
 
-        if "user_id" not in session:
-            return jsonify({
-                "status": "error",
-                "message": "Please login first"
-            }), 401
-
-
         data = request.get_json()
+
+        print("BOOK DATA:", data)
+
+        service_id = data.get("service_id")
+        service_name = data.get("service_name")
+        price = data.get("price")
 
         brand = data.get("brand")
         model = data.get("model")
-        service_id = data.get("service_id")
+        fuel = data.get("fuel")
+
+        firstname = data.get("firstname")
+        lastname = data.get("lastname")
+        mobno = data.get("mobno")
+
+        bikenumber = data.get("bikenumber")
 
         user_id = session.get("user_id")
 
         conn = get_connection()
         cursor = conn.cursor()
 
-        # ================= USER =================
-
-        cursor.execute(
-            "SELECT FirstName, LastName FROM Users WHERE id=?",
-            (user_id,)
-        )
-
-        user = cursor.fetchone()
-
-        if not user:
-            return jsonify({
-                "status": "error",
-                "message": "User not found"
-            })
-
-
-        # ================= SERVICE DETAILS =================
-
-        cursor.execute(
-            "SELECT service_name, price FROM services WHERE id=?",
-            (service_id,)
-        )
-
-        service = cursor.fetchone()
-
-        if not service:
-            return jsonify({
-                "status": "error",
-                "message": "Service not found"
-            })
-
-        service_name = service[0]
-        price = service[1]
-
-
-        # ================= ALREADY BOOKED =================
-
+        # Already booked check
         cursor.execute("""
-
-            SELECT * FROM bookings
-
-            WHERE user_id=?
-            AND brand=?
-            AND model=?
-            AND service=?
-
-        """, (
-
-            user_id,
-            brand,
-            model,
-            service_name
-
-        ))
+            SELECT id
+            FROM bookings
+            WHERE user_id = ?
+            AND service_id = ?
+        """, (user_id, service_id))
 
         existing = cursor.fetchone()
 
         if existing:
 
+            session["booking"] = {
+                "service_id": service_id,
+                "service_name": service_name,
+                "brand": brand,
+                "model": model,
+                "fuel": fuel,
+                "firstname": firstname,
+                "lastname": lastname,
+                "mobno": mobno,
+                "bikenumber": bikenumber,
+                "status": "already_booked"
+            }
+
+            cursor.close()
+            conn.close()
+
             return jsonify({
-                "status": "already_booked",
-                "message": "Already Booked"
+                "status": "already_booked"
             })
 
-
-        # ================= INSERT =================
-
+        # Insert booking
         cursor.execute("""
-
-            INSERT INTO bookings
-            (
+            INSERT INTO bookings (
                 user_id,
+                service_id,
+                service_name,
+                price,
                 firstname,
                 lastname,
+                mobno,
                 brand,
                 model,
-                service,
-                price
+                fuel,
+                bikenumber
             )
-
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-
             user_id,
-            user[0],
-            user[1],
+            service_id,
+            service_name,
+            price,
+            firstname,
+            lastname,
+            mobno,
             brand,
             model,
-            service_name,
-            price
-
+            fuel,
+            bikenumber
         ))
 
         conn.commit()
+
+        session["booking"] = {
+            "service_id": service_id,
+            "service_name": service_name,
+            "brand": brand,
+            "model": model,
+            "fuel": fuel,
+            "firstname": firstname,
+            "lastname": lastname,
+            "mobno": mobno,
+            "bikenumber": bikenumber,
+            "status": "success"
+        }
 
         cursor.close()
         conn.close()
 
         return jsonify({
-            "status": "success",
-            "message": "Booking Successful"
+            "status": "success"
         })
-
 
     except Exception as e:
 
-        print("ERROR:", e)
+        print("BOOK ERROR:", e)
 
         return jsonify({
             "status": "error",
-            "message": "Server Error"
-        })
+            "message": str(e)
+        }), 500
+
+
+@app.route("/get_success_data")
+def get_success_data():
+
+    booking = session.get("booking", {})
+
+    return jsonify(booking)
+
+
+@app.route("/sucess")
+def sucess():
+    return render_template("sucess.html")
+
+
+# =========================================
+# GET SUCCESS DATA
+# =========================================
+
+
+
     
 @app.route("/get_my_bookings")
 def get_my_bookings():
 
     print("SESSION:", session)
     print("USER ID:", session.get("user_id"))
+
     if "user_id" not in session:
         return jsonify([])
 
@@ -388,24 +410,30 @@ def get_my_bookings():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT brand, model, service, price, created_at
+        SELECT 
+            brand,
+            model,
+            fuel,
+            service_name,
+            price,bikenumber
         FROM bookings
         WHERE user_id=?
-        ORDER BY created_at DESC
     """, (user_id,))
 
     rows = cursor.fetchall()
 
     result = []
+
     for row in rows:
+
         result.append({
             "brand": row[0],
             "model": row[1],
-            "service": row[2],
-            "price": row[3],
-            "date": str(row[4])
+            "fuel": row[2],
+            "service_name": row[3],
+            "price":row[4],
+            "bikenumber":row[5]
         })
-        
 
     return jsonify(result)
 
@@ -568,59 +596,55 @@ def get_service_details2(id):
     conn.close()
 
     if row:
+
         return jsonify({
             "id": row[0],
             "name": row[1],
             "price": row[2],
             "image": row[3],
-            "inclusions": ["Engine Check", "Oil Change", "Brake Check"]
+            "inclusions": [
+                "Engine Check",
+                "Oil Change",
+                "Brake Check"
+            ]
         })
 
-    return jsonify({"error": "Not found"})
+    return jsonify({
+        "error": "Not found"
+    })
+
 
 
 @app.route("/get_vehicle_data")
 def get_vehicle_data():
 
     conn = get_connection()
-
     cursor = conn.cursor()
 
-
     cursor.execute("""
-
         SELECT DISTINCT brand, model, fuel
-
-        FROM vehicles
-
+        FROM vehicless
     """)
-
 
     rows = cursor.fetchall()
 
-
     data = []
-
 
     for row in rows:
 
         data.append({
-
             "brand": row[0],
-
             "model": row[1],
-
             "fuel": row[2]
-
         })
 
-
     cursor.close()
-
     conn.close()
 
-
     return jsonify(data)
+
+
+    
 
 
 if __name__ == '__main__':

@@ -36,7 +36,7 @@
     margin: auto;
 
   }
-  .formcontainer select {
+  .formcontainer select,input {
     width: 100%;
     padding: 12px 12px 12px 12px;
     font-size: 15px;
@@ -158,4 +158,18 @@ h3{
 .service-info p{
     color: green;
     font-weight: bold;
+}
+
+.bike-number{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+}
+
+#bikeNumber{
+    width:200px;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:5px;
 }

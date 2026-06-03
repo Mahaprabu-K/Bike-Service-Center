@@ -1,18 +1,62 @@
 window.onload = function () {
 
-    const params = new URLSearchParams(window.location.search);
-    const booking_id = params.get("booking_id");
+    fetch("/get_success_data", {
+        credentials: "include"
+    })
 
-    fetch(`/get_booking/${booking_id}`)
     .then(res => res.json())
+
     .then(data => {
 
-        document.getElementById("service_id").innerText = data.service_id;
-        document.getElementById("brand").innerText = data.brand;
-        document.getElementById("model").innerText = data.model;
-        document.getElementById("fuel").innerText = data.fuel;
-        document.getElementById("name").innerText = data.name;
-        document.getElementById("mobile").innerText = data.mobile;
+        console.log("SUCCESS DATA:", data);
+
+        // =========================
+        // BOOKING STATUS
+        // =========================
+        if (data.status === "already_booked") {
+
+            document.querySelector("h1").innerText =
+                "Already Booked ⚠️";
+
+        } else {
+
+            document.querySelector("h1").innerText =
+                "Booking Successful ✅";
+        }
+
+        // =========================
+        // BOOKING DETAILS
+        // =========================
+        document.getElementById("service_id").innerText =
+            data.service_id || "-";
+
+        document.getElementById("service_name").innerText =
+            data.service_name || "-";
+
+        document.getElementById("brand").innerText =
+            data.brand || "-";
+
+        document.getElementById("model").innerText =
+            data.model || "-";
+
+        document.getElementById("fuel").innerText =
+            data.fuel || "-";
+
+        document.getElementById("name").innerText =
+            (data.firstname || "") + " " + (data.lastname || "");
+
+        document.getElementById("mobile").innerText =
+            data.mobno || "-";
+
+        document.getElementById("bikenumber").innerText =
+            data.bikenumber || "-";
+
+
+    })
+
+    .catch(error => {
+
+        console.log("ERROR:", error);
 
     });
 

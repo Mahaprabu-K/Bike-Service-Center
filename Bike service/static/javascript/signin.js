@@ -30,15 +30,18 @@ usernameInput.addEventListener("input", function () {
             usernameError.innerText =
                 "First letter must be CAPITAL";
 
-            // REMOVE WRONG LETTER
             username = "";
 
-        } else if (username.length <= 15) {
+        } 
+        
+        else if (username.length <= 15) {
 
             usernameError.innerText = "";
         }
 
-    } else {
+    } 
+    
+    else {
 
         usernameError.innerText = "";
     }
@@ -60,10 +63,11 @@ passwordInput.addEventListener("input", function () {
         passwordError.innerText =
             "Only numbers are allowed";
 
-        // REMOVE LETTERS
         value = value.replace(/[^0-9]/g, "");
 
-    } else {
+    } 
+    
+    else {
 
         passwordError.innerText = "";
     }
@@ -90,6 +94,45 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
     let username = usernameInput.value.trim();
     let password = passwordInput.value.trim();
+
+    // CLEAR OLD ERRORS
+    usernameError.innerText = "";
+    passwordError.innerText = "";
+
+    if (username === "" && password === "") {
+
+    usernameError.innerText =
+        "Username is required";
+
+    passwordError.innerText =
+        "Password is required";
+
+    return;
+
+} else {
+
+    usernameError.innerText = "";
+    passwordError.innerText = "";
+}
+    // USERNAME REQUIRED
+    if (username === "") {
+
+        usernameError.innerText =
+            "Username is required";
+
+        return;
+    }
+
+    if (password ===""){
+        passwordError.innerText =
+            "password is required";
+
+        return;
+    }
+
+    if (username === "" || password === "") {
+    return;
+}
 
     // USERNAME CHECK
     let firstLetter = username.charAt(0);
@@ -122,29 +165,48 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
     };
 
     fetch("/login", {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/json"
         },
+
         body: JSON.stringify(data)
+
     })
 
     .then(response => response.json())
 
     .then(result => {
 
+        console.log("LOGIN RESULT:", result);
+
         if(result.status === "success") {
+
+            // SAVE USER DATA
+            localStorage.setItem("firstname", result.firstname);
+            localStorage.setItem("lastname", result.lastname);
+            localStorage.setItem("mobile", result.mobile);
 
             alert("Login Successful");
 
-            // REDIRECT HOME PAGE
+            // REDIRECT
             window.location.href = "/";
 
-        } else {
+        } 
+        
+        else {
 
             alert("Invalid Username or Password");
 
         }
+
+    })
+
+    .catch(error => {
+
+        console.log("ERROR:", error);
 
     });
 

@@ -101,10 +101,7 @@ h3{
     gap: 20px;
 }
 
-.card {
-    position: relative; 
-    width: 350px;
-}
+
 
 .img1 {
     width: 350px;
@@ -158,4 +155,18 @@ h3{
 .service-info p{
     color: green;
     font-weight: bold;
+}
+
+.bike-number{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+}
+
+#bikeNumber{
+    width:300px;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:5px;
 }

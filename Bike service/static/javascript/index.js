@@ -247,6 +247,8 @@ function selectService(name, price, id, image) {
     window.location.href = `/details?id=${id}`;
 }
 
+
+
 // ================= SERVICES =================
 let currentIndex = 0;
 
@@ -327,7 +329,7 @@ function goToOrder2(id, name, price, image) {
     localStorage.setItem("image", image);
 
     // go order page
-    window.location.href = "/order";
+    window.location.href = "/order2";
 }
 
 

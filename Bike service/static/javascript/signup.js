@@ -5,10 +5,8 @@ document.getElementById("firstname").addEventListener("input", function () {
 
     let value = this.value;
 
-    // ONLY LETTERS
     value = value.replace(/[^A-Za-z]/g, "");
 
-    // MAX 15 LETTERS
     if (value.length > 15) {
 
         document.getElementById("fnameError").innerText =
@@ -57,10 +55,8 @@ document.getElementById("phone").addEventListener("input", function () {
 
     let value = this.value;
 
-    // ONLY NUMBERS
     value = value.replace(/[^0-9]/g, "");
 
-    // ONLY 10 DIGITS
     if (value.length > 10) {
 
         document.getElementById("mobileError").innerText =
@@ -131,17 +127,18 @@ document.getElementById("username").addEventListener("input", function () {
 
     let value = this.value;
 
-    // MAX 15 LETTERS
+    value = value.replace(/[^A-Za-z]/g, "");
+
     if (value.length > 15) {
 
         document.getElementById("userError").innerText =
             "Maximum 15 letters only";
 
         value = value.slice(0, 15);
+
     }
 
-    // FIRST LETTER CAPITAL
-    if (value.length > 0) {
+    else if (value.length > 0) {
 
         let firstLetter = value.charAt(0);
 
@@ -154,6 +151,7 @@ document.getElementById("username").addEventListener("input", function () {
 
             document.getElementById("userError").innerText = "";
         }
+
     }
 
     this.value = value;
@@ -167,10 +165,8 @@ document.getElementById("password").addEventListener("input", function () {
 
     let value = this.value;
 
-    // ONLY NUMBERS
     value = value.replace(/[^0-9]/g, "");
 
-    // ONLY 6 NUMBERS
     if (value.length > 6) {
 
         document.getElementById("passError").innerText =
@@ -195,8 +191,7 @@ document.getElementById("confirm_password").addEventListener("input", function (
     let password =
         document.getElementById("password").value;
 
-    let confirm =
-        this.value;
+    let confirm = this.value;
 
     if (password !== confirm) {
 
@@ -209,3 +204,100 @@ document.getElementById("confirm_password").addEventListener("input", function (
     }
 
 });
+
+// =========================================
+// FORM SUBMIT
+// =========================================
+document.getElementById("form").addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    let firstname = document.getElementById("firstname").value;
+    let lastname = document.getElementById("lastname").value;
+    let phone = document.getElementById("phone").value;
+    let whatsapp = document.getElementById("whatsapp").value;
+    let email = document.getElementById("email").value;
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    let gender =
+        document.querySelector('input[name="gender"]:checked');
+
+    if (!gender) {
+
+        alert("Please select gender");
+        return;
+    }
+
+    fetch("/register", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            firstname: firstname,
+            lastname: lastname,
+            phone: phone,
+            whatsapp: whatsapp,
+            email: email,
+            gender: gender.value,
+            username: username,
+            password: password
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(result => {
+
+        alert(result.message);
+
+        if (result.message === "Registered Successful") {
+
+            window.location.href = "/signin";
+        }
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert("Server Error");
+
+    });
+
+});
+
+document.getElementById("form").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let username = usernameInput.value.trim();
+    let password = passwordInput.value.trim();
+
+    // CLEAR OLD ERRORS
+    usernameError.innerText = "";
+    passwordError.innerText = "";
+
+    if (username === "" && password === "") {
+
+    usernameError.innerText =
+        "Username is required";
+
+    passwordError.innerText =
+        "Password is required";
+
+    return;
+
+} else {
+
+    usernameError.innerText = "";
+    passwordError.innerText = "";
+} });
