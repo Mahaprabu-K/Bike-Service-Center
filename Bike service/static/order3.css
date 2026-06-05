@@ -1,0 +1,175 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: white;
+    width: 100%;
+    height: auto;
+  }
+  header {
+    background-color: white;
+    padding: 15px 20px;
+    font-size: 20px;
+    margin: 0 auto;
+    width:100%;
+  }
+  .logos img {
+    height: 70px;
+    width: auto;
+  }
+
+  .logos {
+  display: flex;
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center (optional) */
+}
+  .formcontainer {
+    display: flex;
+    gap: 25px;
+    padding: 50px;
+    padding: 30px;
+    border-radius: 12px;
+    width: 75%;
+    margin: auto;
+
+  }
+  .formcontainer select,input {
+    width: 100%;
+    padding: 12px 12px 12px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .select{
+    background-color: gray;
+  }
+h3{
+    margin-top: 15px;
+    margin-bottom: 35px;
+    display: inline-block;
+    border:1px solid black;
+    border-radius: 5px;
+    padding:4px 40px 4px 40px;
+    background-color: rgb(54, 54, 54);
+    color:white;
+}
+.moto{
+  text-align: center;
+}
+.servicecover{
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-left: 35px;
+    margin-right: 50px;
+}
+.img1{
+    width:300px;
+    height: 180px;
+}
+.in {
+    padding: 5px 15px;
+    border: 2px solid #ffcc00;
+    border-radius: 5px;
+  }
+
+  .user a{
+     text-decoration: none;
+    color: black;
+  }
+
+  .user a:hover {
+    background-color: orange;
+    transition: 0.3s;
+  }
+  
+  
+
+
+.servicecover {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    position: relative; 
+    width: 350px;
+}
+
+.img1 {
+    width: 350px;
+    height: 250px;
+}
+
+.tag {
+    position: absolute;
+    bottom: 0;          
+    left: 0;
+    width: 100%;
+
+    background: rgba(0,0,0,0.7);
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 20px;
+}
+
+.servicecover{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-box{
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f5f5f5;
+}
+
+.service-link{
+    text-decoration: none;
+    color: black;
+}
+
+.service-img{
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.service-info h4{
+    margin: 5px 0;
+}
+
+.service-info p{
+    color: green;
+    font-weight: bold;
+}
+
+.bike-number{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+}
+
+#bikeNumber{
+    width:200px;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}

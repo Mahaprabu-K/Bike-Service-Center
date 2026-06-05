@@ -253,6 +253,9 @@ def get_service_details(id):
         "image": "static/images/"+ service[2],
         "inclusions": [row[0] for row in inclusions]
     })
+
+
+
 @app.route("/book_service", methods=["POST"])
 def book_service():
 
@@ -278,6 +281,13 @@ def book_service():
 
         user_id = session.get("user_id")
 
+        if user_id is None:
+
+            return jsonify({
+                "status": "error",
+                "message": "User not logged in"
+            }), 401
+
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -286,8 +296,13 @@ def book_service():
             SELECT id
             FROM bookings
             WHERE user_id = ?
-            AND service_id = ?
-        """, (user_id, service_id))
+            AND service_name = ?
+            AND price = ?
+        """, (
+            user_id,
+            service_name,
+            price
+        ))
 
         existing = cursor.fetchone()
 
@@ -296,6 +311,7 @@ def book_service():
             session["booking"] = {
                 "service_id": service_id,
                 "service_name": service_name,
+                "price": price,
                 "brand": brand,
                 "model": model,
                 "fuel": fuel,
@@ -345,9 +361,11 @@ def book_service():
 
         conn.commit()
 
+        # Save booking data in session
         session["booking"] = {
             "service_id": service_id,
             "service_name": service_name,
+            "price": price,
             "brand": brand,
             "model": model,
             "fuel": fuel,
@@ -357,6 +375,8 @@ def book_service():
             "bikenumber": bikenumber,
             "status": "success"
         }
+
+        print("SESSION BOOKING =", session["booking"])
 
         cursor.close()
         conn.close()
@@ -374,11 +394,16 @@ def book_service():
             "message": str(e)
         }), 500
 
-
+        
 @app.route("/get_success_data")
 def get_success_data():
 
-    booking = session.get("booking", {})
+    booking = session.get("booking")
+
+    print("BOOKING SESSION =", booking)
+
+    if not booking:
+        return jsonify({})
 
     return jsonify(booking)
 
@@ -386,6 +411,14 @@ def get_success_data():
 @app.route("/sucess")
 def sucess():
     return render_template("sucess.html")
+
+@app.route("/order3")
+def order3():
+    return render_template("order3.html")
+
+@app.route("/details3")
+def details3():
+    return render_template("details3.html")
 
 
 # =========================================
@@ -614,6 +647,30 @@ def get_service_details2(id):
     })
 
 
+@app.route("/get_service_details3/<int:id>")
+def get_service_details3(id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, service_name, price, image
+        FROM services2
+        WHERE id = ?
+    """, (id,))
+
+    row = cursor.fetchone()
+
+    if row is None:
+        return jsonify({"error": "Service not found"}), 404
+
+    return jsonify({
+        "id": row[0],
+        "service_name": row[1],
+        "price": row[2],
+        "image": row[3]
+    })
+
 
 @app.route("/get_vehicle_data")
 def get_vehicle_data():
@@ -644,8 +701,30 @@ def get_vehicle_data():
     return jsonify(data)
 
 
-    
+@app.route("/get_order3")
+def get_order3():
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, service_name, price, image
+        FROM services2
+    """)
+
+    rows = cursor.fetchall()
+
+    data = []
+
+    for row in rows:
+        data.append({
+            "id": row[0],
+            "service_name": row[1],
+            "price": row[2],
+            "image": row[3]
+        })
+
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

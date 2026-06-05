@@ -51,10 +51,31 @@ CREATE TABLE services (
     brand VARCHAR(50)
 );
 
+CREATE TABLE services2 (
+    id INT PRIMARY KEY,
+    service_name VARCHAR(100),
+    price INT,
+    image VARCHAR(100),
+   
+);
+
+INSERT INTO services2 (service_name, price, image) VALUES
+('Standard Service', 2999, 'service1.jpg' ),
+('Premium Service', 4099, 'service2.jpg' ),
+('AC Service', 1699, 'service3.jpg' ),
+('Oil Service', 999, 'service4.jpg');
+
+UPDATE services2
+SET
+    service_name = 'Standard Service',
+    price = 2999,
+    image = 'service.jpg'
+WHERE id = 1;
+
 drop table services;
 
 delete from services;
-drop table services;
+drop table services2;
 
 truncate table services;
 
@@ -64,6 +85,14 @@ CREATE TABLE services (
     price INT,
     image VARCHAR(100),
     brand VARCHAR(50)
+);
+
+CREATE TABLE services2 (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    service_name VARCHAR(100),
+    price INT,
+    image VARCHAR(100),
+    
 );
 
 INSERT INTO services (service_name, price, image, brand) VALUES
@@ -249,7 +278,7 @@ CREATE TABLE bookings2 (
 
 select * from bookings;
 ALTER TABLE bookings
-ADD bikenumber INT;
+ADD bikenumber VARCHAR(10) ;
 
 CREATE TABLE bookings (
 
@@ -270,9 +299,12 @@ CREATE TABLE bookings (
 
 
 ALTER TABLE bookings
-drop service_name ;
-    model VARCHAR(100);
+drop bikenumber
+     INT;
 
 
 
-   
+ INSERT INTO services2
+(service_name, price, image)
+VALUES
+('General Service', 1499, 'service2.jpg');

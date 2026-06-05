@@ -103,7 +103,9 @@ function bookNow() {
 
             fuel: localStorage.getItem("fuel"),
 
-            bikenumber: localStorage.getItem("bikenumber")
+            bikenumber: localStorage.getItem("bikenumber"),
+
+            price: localStorage.getItem("price")
 
         })
 
@@ -164,7 +166,11 @@ function bookNow() {
                 localStorage.getItem("mobile")
             );
 
-            
+             localStorage.setItem(
+                "book_price",
+                localStorage.getItem("price")
+            );
+
 
             window.location.href = "/sucess";
 
