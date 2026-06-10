@@ -29,21 +29,31 @@
                 <small class="error" id="emailError"></small>
             </div>
             <div class="radio-btn">
-                <div class="male"><input id="gender" type="radio" name="gender" value="male">Male</div>
-                <div class="female"><input id="gender" class="female" type="radio" name="gender" value="female">Female</div>
-                <div class="others"><input id="gender" class="others" type="radio" name="gender" value="others">Others</div>
-            </div>
+    <div class="male">
+        <input type="radio" name="gender" value="male"> Male
+    </div>
+
+    <div class="female">
+        <input type="radio" name="gender" value="female"> Female
+    </div>
+
+    <div class="others">
+        <input type="radio" name="gender" value="others"> Others
+    </div>
+</div>
+
+<small class="error" id="genderError"></small>
             <div class="usname">
                 <input name="username" class="pass" id="username" type="text" placeholder="Username" >
                 <small class="error" id="userError"></small>
             </div>
 
             <div class="pass-word"> <input name="password" class="set-pass" id="password" type="password" placeholder="Set password"
-                    required>
+                    >
                 <small class="error" id="passError"></small>
             </div>
             <div class="con-password">
-                <input name="confirm_password" class="con-pass" id="confirm_password" type="password" placeholder="confirm password" required>
+                <input name="confirm_password" class="con-pass" id="confirm_password" type="password" placeholder="confirm password" >
                 <small class="error" id="conpassError"></small>
             </div>
 
